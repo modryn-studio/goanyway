@@ -21,9 +21,9 @@
 - `/` →
 
 ## Social Profiles
-<!-- Your accounts — used by /launch to populate site.ts social block and footer links.
+<!-- Your accounts — used by /init and /launch to populate site.ts social block and footer links.
      Fill in what's relevant. Delete lines that don't apply. -->
-- X/Twitter: https://x.com/TODO
-- GitHub: https://github.com/TODO
-<!-- - Dev.to: https://dev.to/TODO -->
-<!-- - Ship or Die: https://shipordie.club/TODO -->
+- X/Twitter: https://x.com/lukehanner
+- GitHub: https://github.com/modryn-studio
+- Dev.to: https://dev.to/TODO
+- Ship or Die: https://shipordie.club/TODO
