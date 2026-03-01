@@ -14,4 +14,13 @@ export const site = {
   // Brand colors — used in manifest theme_color / background_color
   accent: '#F97415', // TODO: brand accent hex
   bg: '#050505', // TODO: brand background hex
+  // Social profiles — used in footer links and Twitter card metadata
+  // Fill in before running /launch. Add or remove entries as needed.
+  social: {
+    twitter: 'https://x.com/TODO',
+    twitterHandle: '@TODO',
+    github: 'https://github.com/TODO',
+    // devto: 'https://dev.to/TODO',
+    // shipordie: 'https://shipordie.club/TODO',
+  },
 } as const;

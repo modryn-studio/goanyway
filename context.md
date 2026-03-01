@@ -19,3 +19,11 @@
      /privacy and /terms will be added automatically.
      Example: - `/dashboard` → Main user dashboard after login -->
 - `/` →
+
+## Social Profiles
+<!-- Your accounts — used by /launch to populate site.ts social block and footer links.
+     Fill in what's relevant. Delete lines that don't apply. -->
+- X/Twitter: https://x.com/TODO
+- GitHub: https://github.com/TODO
+<!-- - Dev.to: https://dev.to/TODO -->
+<!-- - Ship or Die: https://shipordie.club/TODO -->

@@ -3,7 +3,8 @@ name: seo
 description: "Pre-launch SEO checklist: validate OG tags, register with search engines, submit sitemap."
 agent: ask
 ---
-# SEO Launch Checklist
+# SEO Launch
+Checklist
 
 Walk me through the SEO launch steps for this project. First auto-generate any missing required files, then audit the full codebase, then guide me through the external steps I need to do manually.
 
@@ -17,13 +18,13 @@ import { site } from "@/config/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: site.url, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
+    { url: site.url, lastModified: new Date('YYYY-MM-DD'), changeFrequency: "weekly", priority: 1 },
     // add remaining static routes from app/ directory
   ];
   return staticRoutes;
 }
 ```
-Adapt as needed for any dynamic routes (log posts, tool pages, etc.).
+Use the actual current date for `lastModified` — do NOT use `new Date()` (which changes on every deploy and causes unnecessary crawl churn). Adapt as needed for any dynamic routes (log posts, tool pages, etc.).
 
 **`src/app/robots.ts`** — if missing (do NOT create `public/robots.txt`), create it:
 ```ts
@@ -41,13 +42,13 @@ export default function robots(): MetadataRoute.Robots {
 **Favicon files** — if `src/app/favicon.ico`, `src/app/icon.png`, or `src/app/apple-icon.png` are missing:
 1. Check if `public/brand/logomark.png` exists (1024×1024 recommended).
 2. If it does and ImageMagick (`magick`) is available, run in PowerShell:
-   ```powershell
+  ```powershell
    # Multi-resolution favicon.ico (16/32/48px)
    magick public\brand\logomark.png -define icon:auto-resize=48,32,16 src\app\favicon.ico
    # icon.png and apple-icon.png for Next.js App Router
    Copy-Item public\brand\logomark.png src\app\icon.png
    Copy-Item public\brand\logomark.png src\app\apple-icon.png
-   ```
+  ```
 3. If `public/brand/logomark.png` is absent, tell the user: "Drop your 1024×1024 logomark at `public/brand/logomark.png` and re-run `/seo` to auto-generate favicons."
 4. Ensure `layout.tsx` metadata includes:
    ```ts
@@ -68,6 +69,11 @@ export const site = {
   founder: '<founder name>',
   accent: '<brand accent hex, e.g. #F97415>',
   bg: '<brand bg hex, e.g. #050505>',
+  social: {
+    twitter: 'https://x.com/<handle>',
+    twitterHandle: '@<handle>',
+    github: 'https://github.com/<org-or-user>',
+  },
 } as const;
 ```
 Then update `layout.tsx` to import `site` and replace all hardcoded strings. Remove `manifest: '/manifest.json'` from the metadata export (Next.js auto-injects it from `manifest.ts`).
@@ -115,17 +121,19 @@ Report which files were created vs already existed.
 ## Step 1: Code Audit
 Check the codebase for:
 - [ ] `layout.tsx` has `metadataBase`, `title`, `description`, `openGraph`, `twitter`, `manifest`
+- [ ] `layout.tsx` Twitter card has `site` handle (`twitter.site: site.social?.twitterHandle`)
 - [ ] `layout.tsx` has `icons` field pointing to `/icon.png` and `/apple-icon.png`
 - [ ] `src/app/favicon.ico` exists (multi-resolution, from logomark)
 - [ ] `src/app/icon.png` exists (1024×1024 logomark)
 - [ ] `src/app/apple-icon.png` exists
 - [ ] OG title is 50–60 chars, description is 110–160 chars
-- [ ] `public/og-image.png` exists (1200×630px)
-- [ ] `src/config/site.ts` exists and is fully filled in (no placeholder values)
+- [ ] `public/og-image.png` exists (1200×630px) OR `src/app/opengraph-image.tsx` exists (dynamic via `next/og`)
+- [ ] Key pages beyond home have per-page `opengraph-image.tsx` for unique social cards (flag if only root-level OG exists)
+- [ ] `src/config/site.ts` exists and is fully filled in (no TODO placeholder values)
 - [ ] `src/app/manifest.ts` exists (do NOT check for `public/manifest.json`)
 - [ ] `src/app/robots.ts` exists (do NOT check for `public/robots.txt`)
 - [ ] `src/components/site-schema.tsx` exists and `<SiteSchema />` is rendered in `layout.tsx`
-- [ ] `src/app/sitemap.ts` exists and lists all public routes
+- [ ] `src/app/sitemap.ts` exists, lists all public routes, and uses static `lastModified` dates (not `new Date()`)
 - [ ] `package.json` has a `description` field
 
 Report PASS / MISSING for each item with file paths for anything missing.
@@ -146,7 +154,7 @@ Report PASS / MISSING for each item with file paths for anything missing.
 1. Go to https://www.bing.com/webmasters
 2. Sign in with Microsoft account
 3. Select **Import from Google Search Console** — pulls your site and sitemap automatically
-4. Done (also covers Yahoo and DuckDuckGo which use Bing’s index)
+4. Done (also covers Yahoo and DuckDuckGo which use Bing's index)
 
 ## Step 3: Validation
 Tell me to check these once the site is deployed:
