@@ -8,15 +8,16 @@
 
 ## URL
 <!-- The deployed URL for this tool.
-     Tools live on modrynstudio.com as subdirectory paths — NOT subdomains.
-     Subdomains (toolname.modrynstudio.com) are treated as separate sites by Google and get no domain authority.
-     Subdirectories (modrynstudio.com/toolname) inherit authority. Always use subdirectories.
+     Tools live at modrynstudio.com/tools/[slug] — NOT on a separate domain or subdomain.
+     Subdirectories inherit domain authority. Subdomains and separate domains do not.
 
-     Option A (recommended — 48hr builds): add the tool as routes in modryn-studio-v2.
-       URL = https://modrynstudio.com/[toolroute]
-     Option B: separate Vercel project + rewrite in modryn-studio-v2 next.config.ts.
-       URL = https://modrynstudio.com/tools/[slug]
+     This repo deploys to a free .vercel.app URL. modryn-studio-v2 rewrites
+     modrynstudio.com/tools/[slug]/* to this deployment URL. Google sees one domain.
 
+     Set basePath in this repo's next.config.ts to match the slug:
+       basePath: '/tools/your-slug'
+
+     URL = https://modrynstudio.com/tools/your-slug
      Exception: pre-existing brands with their own domain (e.g. specifythat.com). -->
 
 ## Stack Additions
