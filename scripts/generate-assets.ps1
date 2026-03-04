@@ -15,13 +15,12 @@
 #                                   transparent bg if you want the auto-invert
 #                                   dual-favicon mode (see below).
 #
-#   OPTIONAL — enables dual favicon mode:
-#   public/brand/logomark-dark.png  Your mark as it should appear on dark
-#                                   backgrounds (e.g. white/light-colored).
-#                                   If this file exists, the script uses both
-#                                   files for light/dark favicon switching.
-#                                   If absent, logomark.png is used for both
-#                                   modes (good for colored marks).
+#   OPTIONAL — explicit dark-mode favicon override:
+#   public/brand/logomark-dark.png  Overrides the auto-detected dark favicon.
+#                                   Only needed for a hand-crafted dark version.
+#                                   If absent, the script auto-detects mark type:
+#                                   colored marks reuse logomark.png for both;
+#                                   grayscale marks (black/white) auto-invert.
 #
 #   OPTIONAL — skipped if missing, auto-generated:
 #   public/brand/banner.png         1280×320 README header image.
