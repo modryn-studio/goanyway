@@ -85,7 +85,7 @@ Configured via `editor.formatOnSave: true` in `.vscode/settings.json`. Requires 
 │   ├── update.prompt.md           ← /update command (cascade edits to context.md/brand.md into derived files)
 │   ├── assets.prompt.md           ← /assets command (generate favicons, icons, OG image, banner)
 │   ├── tool.prompt.md             ← /tool command (register/update tool on modrynstudio.com → PR)
-│   ├── deps.prompt.md             ← /deps command (update checker)
+│   ├── deps.prompt.md             ← /deps command (version + API pattern validator)
 │   ├── log.prompt.md              ← /log command (draft build log post → PR on modryn-studio-v2)
 │   ├── seo.prompt.md              ← /seo command (SEO audit + registration)
 │   └── launch.prompt.md           ← /launch command (distribution: sharing hooks, social, community posting)
