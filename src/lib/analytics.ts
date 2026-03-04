@@ -24,6 +24,7 @@ export const analytics = {
   track,
   newsletterSignup: () => track('newsletter_signup'),
   feedbackSubmit: () => track('feedback_submit'),
+  formStarted: () => track('form_started'),
   planGenerated: (props: { activity: string; city: string; comfort_level: number }) =>
     track('plan_generated', props),
   paygateHit: () => track('paygate_hit'),
