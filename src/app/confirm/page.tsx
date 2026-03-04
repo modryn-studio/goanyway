@@ -27,7 +27,17 @@ interface ConfirmMeta {
 // SMS opt-in — schedules a reminder + "did you go?" follow-up.
 // Optional: user skips, plan still works without it.
 // ---------------------------------------------------------------------------
-function SmsOptIn({ activity, city }: { activity: string; city: string }) {
+function SmsOptIn({
+  activity,
+  city,
+  eventDate,
+  eventTime,
+}: {
+  activity: string;
+  city: string;
+  eventDate?: string;
+  eventTime?: string;
+}) {
   const [phone, setPhone] = useState('');
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
@@ -41,7 +51,7 @@ function SmsOptIn({ activity, city }: { activity: string; city: string }) {
       await fetch(`${BASE_PATH}/api/sms`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: phone.trim(), activity, city }),
+        body: JSON.stringify({ phone: phone.trim(), activity, city, eventDate, eventTime }),
       });
       analytics.smsOptedIn();
     } catch {
@@ -109,7 +119,7 @@ export default function ConfirmPage() {
   const [plan, setPlan] = useState<Plan | null>(null);
   const [meta, setMeta] = useState<ConfirmMeta | null>(null);
   const [status, setStatus] = useState<'loading' | 'paid_no_plan' | 'not_paid' | 'no_session'>(
-    'loading',
+    'loading'
   );
 
   const sessionId = searchParams.get('session_id');
@@ -177,7 +187,10 @@ export default function ConfirmPage() {
         <p className="text-muted mt-3 text-sm">
           Your plan wasn&apos;t found in this session — it may have been cleared.
           {meta?.activity && meta?.city && (
-            <> You paid for a {meta.activity} plan in {meta.city}.</>
+            <>
+              {' '}
+              You paid for a {meta.activity} plan in {meta.city}.
+            </>
           )}
         </p>
         <Link href="/" className="text-accent mt-5 font-mono text-sm underline underline-offset-4">
@@ -255,7 +268,12 @@ export default function ConfirmPage() {
 
         {/* SMS opt-in */}
         <section className="border-border border-t pt-10">
-          <SmsOptIn activity={plan.activity} city={plan.city} />
+          <SmsOptIn
+            activity={plan.activity}
+            city={plan.city}
+            eventDate={plan.event.date}
+            eventTime={plan.event.time}
+          />
         </section>
 
         {/* Back to event details */}
