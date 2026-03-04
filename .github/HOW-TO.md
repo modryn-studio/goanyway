@@ -50,7 +50,7 @@ Usage: switch to Agent mode, then type:
 
 **`/log`** — Draft a build log post for modrynstudio.com. Reads recent commits from this repo, asks for context, then opens a PR on `modryn-studio/modryn-studio-v2` with a draft MDX post. Fill in the TODOs, merge to publish.
 
-**`/deps`** — Check all dependencies for newer versions. Shows outdated packages, asks before updating.
+**`/deps`** — Validate all dependencies against live documentation. Checks version gaps AND API pattern changes. Web searches changelogs and migration guides for every key package, then shows two tables: version status + breaking API changes to know about. Run this any time you're unsure if I'm building with current patterns.
 
 **`/assets`** — Generate all favicons, icons, OG image, and README banner from your logomark. Checks prerequisites (logomark exists, ImageMagick installed), runs the generator, and commits the output.
 
@@ -108,12 +108,13 @@ development-principles.md          ← SOURCE OF TRUTH: product philosophy — p
 
 > **Cascade rule:** `context.md`, `brand.md`, and `development-principles.md` are the source of truth. Edit them → run `/update` immediately. `copilot-instructions.md`, `site.ts`, and `next.config.ts` are derived — do not edit them directly.
 
-| Source edited | Run |
-| --- | --- |
-| Any source doc (first time, new project) | `/init` |
-| Any source doc (after init already ran) | `/update` |
+| Source edited                            | Run       |
+| ---------------------------------------- | --------- |
+| Any source doc (first time, new project) | `/init`   |
+| Any source doc (after init already ran)  | `/update` |
 
 ```
+
 ```
 
 ## Brand Assets
