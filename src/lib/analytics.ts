@@ -24,4 +24,12 @@ export const analytics = {
   track,
   newsletterSignup: () => track('newsletter_signup'),
   feedbackSubmit: () => track('feedback_submit'),
+  planGenerated: (props: { activity: string; city: string; comfort_level: number }) =>
+    track('plan_generated', props),
+  paygateHit: () => track('paygate_hit'),
+  paymentGate: (action: string) => track('payment_gate', { action }),
+  paymentComplete: () => track('payment_complete'),
+  smsOptedIn: () => track('sms_opted_in'),
+  didYouGoYes: () => track('did_you_go_yes'),
+  didYouGoNo: () => track('did_you_go_no'),
 };

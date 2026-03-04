@@ -1,10 +1,10 @@
-![Modryn Studio Boilerplate](public/brand/banner.png)
+![GoAnyway](public/brand/banner.png)
 
-# Modryn Studio — Boilerplate
+# GoAnyway
 
-Next.js starter for every Modryn Studio product. Pre-wired for production from day one.
+You already RSVP'd. Get a plan for when you walk in.
 
-→ [modrynstudio.com](https://modrynstudio.com)
+→ [modrynstudio.com/tools/goanyway](https://modrynstudio.com/tools/goanyway)
 
 ---
 

@@ -1,6 +1,6 @@
 # Copilot Setup — How To Use
 
-## New Project Setup
+## New Next.js Project Setup
 
 1. Create a blank repo on GitHub, then clone it locally
 2. Clone this repo into the project folder:
@@ -22,11 +22,11 @@
 
 ## Modes (built into VS Code)
 
-| Mode | When to use | How |
-|------|-------------|-----|
-| **Ask** | Quick questions about your codebase | Chat → select "Ask" |
-| **Plan** | Blueprint a feature before building | Chat → select "Plan" |
-| **Agent** | Build, edit files, run commands | Chat → select "Agent" |
+| Mode      | When to use                         | How                   |
+| --------- | ----------------------------------- | --------------------- |
+| **Ask**   | Quick questions about your codebase | Chat → select "Ask"   |
+| **Plan**  | Blueprint a feature before building | Chat → select "Plan"  |
+| **Agent** | Build, edit files, run commands     | Chat → select "Agent" |
 
 Open chat: `Ctrl+Alt+I`
 
@@ -35,6 +35,7 @@ Open chat: `Ctrl+Alt+I`
 **`@check`** — Pre-ship quality gate. Checks for bugs → scans → fixes → lints → builds → commits. Never pushes.
 
 Usage: switch to Agent mode, then type:
+
 ```
 @check
 ```
@@ -107,9 +108,11 @@ development-principles.md          ← Permanent product philosophy — do not e
 Drop your logomark, type `/assets`, done.
 
 **Required:**
+
 - `public/brand/logomark.png` — 1024×1024, your mark on a transparent background
 
 **Optional:**
+
 - `public/brand/logomark-dark.png` — white/light version of the mark. If present, enables light/dark favicon switching. If absent, `logomark.png` is used for both modes (fine for colored marks).
 - `public/brand/banner.png` — 1280×320 README header. Auto-generated from your logomark if missing.
 
@@ -125,15 +128,15 @@ Re-run any time you update the logomark or after filling in `src/config/site.ts`
 
 **What gets generated:**
 
-| File | Purpose |
-|---|---|
-| `public/icon-light.png` | Favicon in light mode |
-| `public/icon-dark.png` | Favicon in dark mode |
-| `public/icon.png` | 1024×1024 for manifest + JSON-LD |
-| `public/favicon.ico` | Legacy fallback (48/32/16px) |
-| `src/app/apple-icon.png` | iOS home screen icon |
-| `public/og-image.png` | 1200×630 social card |
-| `public/brand/banner.png` | README header (if not provided) |
+| File                      | Purpose                          |
+| ------------------------- | -------------------------------- |
+| `public/icon-light.png`   | Favicon in light mode            |
+| `public/icon-dark.png`    | Favicon in dark mode             |
+| `public/icon.png`         | 1024×1024 for manifest + JSON-LD |
+| `public/favicon.ico`      | Legacy fallback (48/32/16px)     |
+| `src/app/apple-icon.png`  | iOS home screen icon             |
+| `public/og-image.png`     | 1200×630 social card             |
+| `public/brand/banner.png` | README header (if not provided)  |
 
 ## Live Log Monitoring
 

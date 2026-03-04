@@ -1,54 +1,50 @@
 # Brand
 
-Fill this in before running `/project-init`. It populates the Brand & Voice section of `copilot-instructions.md`.
-
----
-
 ## Voice
 
-How the product sounds in UI copy, headings, CTAs, and error messages.
-
-- <!-- TODO: voice rule 1. Example: "Short sentences. Direct. No jargon." -->
-- <!-- TODO: voice rule 2. Example: "Confident without being arrogant." -->
-- <!-- TODO: voice rule 3. Example: "Honest about what doesn't exist yet." -->
-- Never use: <!-- TODO: list words/phrases that feel off-brand. Example: "powerful, seamless, revolutionary, unlock" -->
+- Short sentences. Direct. No fluff. Say the thing.
+- Warm without being soft. This tool understands the fear — it doesn't cheerlead over it.
+- Honest about what the tool is: a plan, not a guarantee. It gets you to the door. You walk through it.
+- Never use: "empower, seamless, journey, connect, unlock, transform, discover, community-driven, game-changer, leverage"
 
 ---
 
 ## The User
 
-One or two sentences describing who you're building for. Be specific about what they feel, want, or hate.
-
-<!-- TODO: Example: "Impatient people who hate bad software and don't want to do the research. They want it handed to them. Fast." -->
+Someone who already knows what they want (to meet people, feel less alone) but freezes at the last inch — the RSVP they never follow through on.
+They don't need inspiration. They need a script and the confidence that they won't be the only one who showed up alone.
 
 ---
 
 ## Visual Rules
 
-- Color mode: <!-- TODO: Example: "Dark mode base, system toggle" -->
-- Accent color: <!-- TODO: Example: "Amber / Burnt Orange (#F97415)" -->
-- Fonts: <!-- TODO: Example: "Space Grotesk (headlines) + Space Mono (badges/code)" -->
-- Motion: <!-- TODO: Example: "Minimal. One scroll fade max." -->
-- Avoid: <!-- TODO: Example: "No fake testimonials, no stock photos, no popups" -->
+- Color mode: Dark mode base, system toggle available
+- Accent color: Warm amber — #F59E0B — used for CTAs, event cards, and key stats
+- Fonts: Space Grotesk (headlines + UI) + Inter (body copy)
+- Motion: Minimal. Single fade-in on result reveal. No looping animations.
+- Avoid: No stock photos of smiling friend groups. No fake testimonials. No confetti. No gradients that feel like a wellness app.
 
 ---
 
 ## Emotional Arc
 
-What a visitor feels at each stage — land, read, scroll, convert.
-
-- Land: <!-- TODO: Example: "Wait, this is different" -->
-- Read: <!-- TODO: Example: "This person actually builds real things" -->
-- Scroll: <!-- TODO: Example: "I want to follow this journey" -->
-- Convert: <!-- TODO: Example: "I don't want to miss the next one" -->
+- Land: "Someone actually named the problem."
+- Read: "This is specific enough to be real."
+- Scroll: "I want to see my plan."
+- Convert: "Nine dollars to stop bailing on myself. Fine."
 
 ---
 
 ## Copy Examples
 
-Real copy to use as reference when writing UI text.
-
-- Hero: <!-- TODO: Example: "Tools for people who don't have time for bad software." -->
-- CTA: <!-- TODO: Example: "Don't miss the drop." -->
-- Footer: <!-- TODO: Example: "Built by Luke. Paid for by a day job. Shipping anyway." -->
-- Error: <!-- TODO: Example: "Something went wrong. Try again." -->
+- Hero: "You already RSVPd. Now get a plan for what happens when you walk in."
+- Sub-hero: "Pick your activity. Enter your city. Get one real event, a what-to-expect briefing, and a script for your first hour."
+- CTA (primary): "Build my plan →"
+- CTA (paygate): "Get the full script — $9"
+- Paygate reassurance: "One time. No subscription. Yours to keep."
+- Email capture: "Save your plan. We'll check in to see if you went."
+- Follow-up email subject: "Did you go?"
+- Comfort stat format: "68% of people at their first hiking club event came alone. You won't be the only one."
+- Footer: "Built by Luke because he's also bailed on a few Meetups."
+- Error: "Something went wrong generating your plan. Try again — it usually works."
+- Empty state (no Eventbrite results): "We couldn't find a live event for that city. Here's what to search for instead →"
