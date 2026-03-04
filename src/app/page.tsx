@@ -10,7 +10,7 @@ export default function Home() {
           <br />
           <span className="text-accent">Now get a plan.</span>
         </h1>
-        <p className="mt-6 max-w-xl text-lg text-muted">
+        <p className="text-muted mt-6 max-w-xl text-lg">
           Pick your activity. Enter your city. Get one real event, a what-to-expect briefing, and a
           script for your first hour.
         </p>
@@ -19,7 +19,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border px-6 py-10 text-center font-mono text-xs text-muted">
+      <footer className="border-border text-muted border-t px-6 py-10 text-center font-mono text-xs">
         Built by Luke because he&apos;s also bailed on a few Meetups.
       </footer>
     </main>

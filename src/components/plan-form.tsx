@@ -54,10 +54,19 @@ export default function PlanForm() {
         return;
       }
 
-      const data = await res.json();
-      analytics.planGenerated({ activity: activity.trim(), city: city.trim(), comfort_level: comfort });
+      // GenerateResponse shape: { id: string, plan: Plan }
+      const data = await res.json() as { id: string; plan: unknown };
 
-      // TODO: /api/generate returns { id } — result page fetches plan by ID
+      // Store plan in sessionStorage — result page reads it back by ID.
+      // No backend store needed: plan travels with the browser session.
+      sessionStorage.setItem(`plan_${data.id}`, JSON.stringify(data.plan));
+
+      analytics.planGenerated({
+        activity: activity.trim(),
+        city: city.trim(),
+        comfort_level: comfort,
+      });
+
       router.push(`/result?id=${data.id}`);
     } catch {
       setError('Something went wrong. Try again.');
@@ -72,7 +81,7 @@ export default function PlanForm() {
       <div>
         <label
           htmlFor="activity"
-          className="mb-2 block font-mono text-xs font-bold uppercase tracking-widest text-muted"
+          className="text-muted mb-2 block font-mono text-xs font-bold tracking-widest uppercase"
         >
           Activity
         </label>
@@ -80,9 +89,12 @@ export default function PlanForm() {
           id="activity"
           type="text"
           value={activity}
-          onChange={(e) => { trackStart(); setActivity(e.target.value); }}
+          onChange={(e) => {
+            trackStart();
+            setActivity(e.target.value);
+          }}
           placeholder="hiking, book club, pottery class..."
-          className="w-full border border-border bg-surface px-4 py-3 text-base text-text placeholder-muted focus:border-accent focus:outline-none"
+          className="border-border bg-surface text-text placeholder-muted focus:border-accent w-full border px-4 py-3 text-base focus:outline-none"
           required
           autoComplete="off"
         />
@@ -92,7 +104,7 @@ export default function PlanForm() {
       <div>
         <label
           htmlFor="city"
-          className="mb-2 block font-mono text-xs font-bold uppercase tracking-widest text-muted"
+          className="text-muted mb-2 block font-mono text-xs font-bold tracking-widest uppercase"
         >
           City
         </label>
@@ -100,9 +112,12 @@ export default function PlanForm() {
           id="city"
           type="text"
           value={city}
-          onChange={(e) => { trackStart(); setCity(e.target.value); }}
+          onChange={(e) => {
+            trackStart();
+            setCity(e.target.value);
+          }}
           placeholder="Denver, Austin, Chicago..."
-          className="w-full border border-border bg-surface px-4 py-3 text-base text-text placeholder-muted focus:border-accent focus:outline-none"
+          className="border-border bg-surface text-text placeholder-muted focus:border-accent w-full border px-4 py-3 text-base focus:outline-none"
           required
           autoComplete="off"
         />
@@ -110,7 +125,7 @@ export default function PlanForm() {
 
       {/* Comfort level — 5 discrete labeled steps, never a range slider */}
       <div>
-        <p className="mb-3 font-mono text-xs font-bold uppercase tracking-widest text-muted">
+        <p className="text-muted mb-3 font-mono text-xs font-bold tracking-widest uppercase">
           How social are you feeling?
         </p>
         <div className="grid grid-cols-5 gap-2">
@@ -118,7 +133,10 @@ export default function PlanForm() {
             <button
               key={value}
               type="button"
-              onClick={() => { trackStart(); setComfort(value); }}
+              onClick={() => {
+                trackStart();
+                setComfort(value);
+              }}
               aria-pressed={comfort === value}
               className={`flex flex-col items-center gap-1.5 border px-2 py-3 text-center transition-colors ${
                 comfort === value
@@ -126,7 +144,7 @@ export default function PlanForm() {
                   : 'border-border bg-surface text-text hover:border-accent'
               }`}
             >
-              <span className="font-heading text-2xl font-bold leading-none">{value}</span>
+              <span className="font-heading text-2xl leading-none font-bold">{value}</span>
               <span className="font-mono text-[10px] leading-tight">{label}</span>
             </button>
           ))}
@@ -138,7 +156,7 @@ export default function PlanForm() {
       <button
         type="submit"
         disabled={!activity.trim() || !city.trim() || !comfort || submitting}
-        className="h-12 w-full bg-accent font-mono text-sm font-bold text-black transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+        className="bg-accent h-12 w-full font-mono text-sm font-bold text-black transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
       >
         {submitting ? 'Building your plan...' : 'Build my plan →'}
       </button>

@@ -21,6 +21,13 @@ interface PayGateProps {
    * requires `stripe` npm package + STRIPE_SECRET_KEY + STRIPE_PRICE_ID env vars).
    */
   checkoutUrl?: string;
+  /**
+   * Optional metadata passed as JSON body to POST /api/checkout.
+   * Use to carry plan data (activity, city, comfort_level, plan_id) through to
+   * Stripe session metadata → /confirm page.
+   * Only used when checkoutUrl is not set (Checkout Sessions mode).
+   */
+  checkoutBody?: Record<string, unknown>;
 }
 
 /**
@@ -35,7 +42,7 @@ interface PayGateProps {
  * After Stripe redirects back with ?paid=true, stores the receipt
  * in localStorage and reveals the content. No accounts, no database.
  */
-export default function PayGate({ children, valueProposition, price, checkoutUrl }: PayGateProps) {
+export default function PayGate({ children, valueProposition, price, checkoutUrl, checkoutBody }: PayGateProps) {
   const [hasPaid, setHasPaid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
@@ -77,6 +84,7 @@ export default function PayGate({ children, valueProposition, price, checkoutUrl
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: checkoutBody ? JSON.stringify(checkoutBody) : undefined,
       });
 
       const data = await res.json();
@@ -92,15 +100,15 @@ export default function PayGate({ children, valueProposition, price, checkoutUrl
   if (hasPaid) return <>{children}</>;
 
   return (
-    <div className="mx-auto max-w-md border-2 border-[var(--color-border)] p-8 text-center">
+    <div className="border-border mx-auto max-w-md border-2 p-8 text-center">
       <h3 className="font-heading text-xl font-semibold">{valueProposition}</h3>
-      <p className="mt-4 font-mono text-sm text-[var(--color-muted)]">
+      <p className="text-muted mt-4 font-mono text-sm">
         One-time payment. No account required. Works instantly.
       </p>
       <button
         onClick={handleCheckout}
         disabled={loading}
-        className="mt-6 h-12 w-full rounded-none bg-[var(--color-accent)] px-8 font-mono text-sm font-bold text-white hover:opacity-90 disabled:opacity-50"
+        className="bg-accent mt-6 h-12 w-full px-8 font-mono text-sm font-bold text-black hover:opacity-90 disabled:opacity-50"
       >
         {loading ? 'Redirecting...' : `Pay ${price}`}
       </button>

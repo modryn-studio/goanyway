@@ -9,21 +9,21 @@
 
 /* Tailwind v4: register custom tokens as utilities (bg-bg, text-accent, etc.) */
 @theme {
-  --color-bg: #1A1713;
+  --color-bg: #1a1713;
   --color-surface: #252017;
   --color-border: #3a3328;
   --color-text: #fafafa;
   --color-muted: #888888;
-  --color-accent: #F5A623;
+  --color-accent: #f5a623;
 }
 
 :root {
-  --color-bg: #1A1713;
+  --color-bg: #1a1713;
   --color-surface: #252017;
   --color-border: #3a3328;
   --color-text: #fafafa;
   --color-muted: #888888;
-  --color-accent: #F5A623;
+  --color-accent: #f5a623;
 
   --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;

@@ -1,9 +1,8 @@
 /**
- * Stripe Checkout Sessions — upgrade path from Payment Links.
+ * Stripe Checkout Sessions — $9 one-time payment for GoAnyway plan.
  *
- * Only needed when you require dynamic pricing, coupons, or programmatic
- * control over checkout. For simple one-time payments, use Stripe Payment
- * Links instead (no server code needed — see pay-gate.tsx).
+ * Accepts optional plan metadata in the POST body and stores it in the
+ * Stripe session so /confirm can read it after redirect.
  *
  * Prerequisites:
  *   npm install stripe
@@ -13,6 +12,13 @@ import { createRouteLogger } from '@/lib/route-logger';
 import Stripe from 'stripe';
 
 const log = createRouteLogger('checkout');
+
+interface CheckoutBody {
+  plan_id?: string;
+  activity?: string;
+  city?: string;
+  comfort_level?: number;
+}
 
 export async function POST(req: Request): Promise<Response> {
   const ctx = log.begin();
@@ -29,17 +35,36 @@ export async function POST(req: Request): Promise<Response> {
       );
     }
 
+    // Read optional plan metadata from body
+    let body: CheckoutBody = {};
+    try {
+      body = (await req.json()) as CheckoutBody;
+    } catch {
+      // Body is optional — no-op if absent or unparseable
+    }
+
     const stripe = new Stripe(secretKey);
 
-    // Derive success URL from request origin
+    // Build success URL — /confirm reads session_id to retrieve plan metadata
     const origin = new URL(req.url).origin;
+    const basePath = '/tools/goanyway';
+    const successUrl = `${origin}${basePath}/confirm?session_id={CHECKOUT_SESSION_ID}`;
+    const cancelUrl = `${origin}${basePath}/result`;
+
+    // Strip undefined values — Stripe metadata values must be strings
+    const metadata: Record<string, string> = {};
+    if (body.plan_id) metadata.plan_id = body.plan_id;
+    if (body.activity) metadata.activity = body.activity;
+    if (body.city) metadata.city = body.city;
+    if (body.comfort_level !== undefined) metadata.comfort_level = String(body.comfort_level);
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${origin}?paid=true`,
-      cancel_url: origin,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      metadata,
     });
 
     log.info(ctx.reqId, 'Checkout session created', { sessionId: session.id });

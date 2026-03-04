@@ -60,16 +60,16 @@ Usage: switch to Agent mode, then type:
 
 **When to run each command:**
 
-| Command | When |
-| --- | --- |
-| `/init` | Once, at project start |
-| `/update` | Any time source docs change |
-| `/deps` | Any time you're questioning staleness |
-| `/assets` | Once, when logomark is ready |
-| `/tool` | Twice: at start (register) + at launch (flip to live) |
-| `/log` | Any time you want to write a build post |
-| `/seo` | Pre-launch, once |
-| `/launch` | Pre-launch, after `/seo` |
+| Command   | When                                                  |
+| --------- | ----------------------------------------------------- |
+| `/init`   | Once, at project start                                |
+| `/update` | Any time source docs change                           |
+| `/deps`   | Any time you're questioning staleness                 |
+| `/assets` | Once, when logomark is ready                          |
+| `/tool`   | Twice: at start (register) + at launch (flip to live) |
+| `/log`    | Any time you want to write a build post               |
+| `/seo`    | Pre-launch, once                                      |
+| `/launch` | Pre-launch, after `/seo`                              |
 
 Usage: type any slash command in chat.
 
