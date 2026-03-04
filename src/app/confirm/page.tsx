@@ -64,8 +64,7 @@ function SmsOptIn({ activity, city }: { activity: string; city: string }) {
     <div>
       <p className="font-heading text-xl font-bold">Want a reminder?</p>
       <p className="text-muted mt-2 text-sm">
-        Text you before the event. Follow up after to ask if you went.
-        Two messages total.
+        Text you before the event. Follow up after to ask if you went. Two messages total.
       </p>
       <form onSubmit={handleSubmit} className="mt-5 flex gap-3">
         <input
@@ -87,7 +86,7 @@ function SmsOptIn({ activity, city }: { activity: string; city: string }) {
       <button
         type="button"
         onClick={() => setSkipped(true)}
-        className="text-muted mt-3 font-mono text-xs underline underline-offset-4 hover:text-text"
+        className="text-muted hover:text-text mt-3 font-mono text-xs underline underline-offset-4"
       >
         No thanks
       </button>
@@ -144,10 +143,7 @@ export default function ConfirmPage() {
         <p className="text-muted mt-3 text-sm">
           Your plan wasn&apos;t found in this session — it may have been cleared.
         </p>
-        <Link
-          href="/"
-          className="text-accent mt-5 font-mono text-sm underline underline-offset-4"
-        >
+        <Link href="/" className="text-accent mt-5 font-mono text-sm underline underline-offset-4">
           Generate a new plan →
         </Link>
       </main>
@@ -171,10 +167,9 @@ export default function ConfirmPage() {
   return (
     <main className="min-h-screen">
       <div className="mx-auto max-w-xl space-y-16 px-6 py-16">
-
         {/* Header */}
         <div>
-          <p className="text-accent font-mono text-xs font-bold uppercase tracking-widest">
+          <p className="text-accent font-mono text-xs font-bold tracking-widest uppercase">
             Plan unlocked
           </p>
           <h1 className="font-heading mt-2 text-3xl font-bold">
@@ -184,7 +179,7 @@ export default function ConfirmPage() {
 
         {/* Comfort stat — surfaces first, brand rule: big number stops the scroll */}
         <section>
-          <div className="text-accent font-heading text-[72px] font-bold leading-none">
+          <div className="text-accent font-heading text-[72px] leading-none font-bold">
             {comfort_stat.percentage}%
           </div>
           <p className="text-muted mt-3 max-w-sm text-base">{comfort_stat.label}</p>
@@ -193,26 +188,26 @@ export default function ConfirmPage() {
 
         {/* First-hour script */}
         <section>
-          <p className="text-muted mb-6 font-mono text-xs font-bold uppercase tracking-widest">
+          <p className="text-muted mb-6 font-mono text-xs font-bold tracking-widest uppercase">
             Your first-hour script
           </p>
           <div className="space-y-6">
             <div>
-              <span className="text-muted font-mono text-xs uppercase tracking-widest">
+              <span className="text-muted font-mono text-xs tracking-widest uppercase">
                 Open with
               </span>
               <p className="mt-2 text-lg font-medium">&ldquo;{opener}&rdquo;</p>
             </div>
             {followups.map((line, i) => (
               <div key={i}>
-                <span className="text-muted font-mono text-xs uppercase tracking-widest">
+                <span className="text-muted font-mono text-xs tracking-widest uppercase">
                   Follow up
                 </span>
                 <p className="mt-2 text-base">&ldquo;{line}&rdquo;</p>
               </div>
             ))}
             <div>
-              <span className="text-muted font-mono text-xs uppercase tracking-widest">
+              <span className="text-muted font-mono text-xs tracking-widest uppercase">
                 Exit if needed
               </span>
               <p className="mt-2 text-base">&ldquo;{exit}&rdquo;</p>
@@ -229,11 +224,10 @@ export default function ConfirmPage() {
         {/* Back to event details */}
         <Link
           href={`/result?id=${plan.id}`}
-          className="text-muted block font-mono text-xs underline underline-offset-4 hover:text-text"
+          className="text-muted hover:text-text block font-mono text-xs underline underline-offset-4"
         >
           ← Back to event details
         </Link>
-
       </div>
     </main>
   );

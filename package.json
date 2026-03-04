@@ -1,6 +1,7 @@
 {
-  "name": "your-project-name",
+  "name": "goanyway",
   "version": "1.0.0",
+  "description": "Stop bailing on your first social event. Get a real event, a briefing, and a first-hour script.",
   "private": true,
   "scripts": {
     "dev": "next dev",

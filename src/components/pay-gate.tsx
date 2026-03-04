@@ -42,7 +42,13 @@ interface PayGateProps {
  * After Stripe redirects back with ?paid=true, stores the receipt
  * in localStorage and reveals the content. No accounts, no database.
  */
-export default function PayGate({ children, valueProposition, price, checkoutUrl, checkoutBody }: PayGateProps) {
+export default function PayGate({
+  children,
+  valueProposition,
+  price,
+  checkoutUrl,
+  checkoutBody,
+}: PayGateProps) {
   const [hasPaid, setHasPaid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);

@@ -29,10 +29,7 @@ export async function POST(req: Request): Promise<Response> {
 
     if (!secretKey || !priceId) {
       log.warn(ctx.reqId, 'Stripe not configured');
-      return log.end(
-        ctx,
-        Response.json({ error: 'Payment service unavailable' }, { status: 503 }),
-      );
+      return log.end(ctx, Response.json({ error: 'Payment service unavailable' }, { status: 503 }));
     }
 
     // Read optional plan metadata from body

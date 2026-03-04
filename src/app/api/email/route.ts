@@ -19,7 +19,8 @@ export async function POST(req: Request): Promise<Response> {
 
   try {
     const apiKey = process.env.RESEND_API_KEY;
-    const audienceId = process.env.RESEND_AUDIENCE_ID;
+    // RESEND_SEGMENT_ID is the audience ID — Resend's contacts API takes audienceId
+    const audienceId = process.env.RESEND_SEGMENT_ID ?? process.env.RESEND_AUDIENCE_ID;
 
     if (!apiKey) {
       log.warn(ctx.reqId, 'RESEND_API_KEY not set');

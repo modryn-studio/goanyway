@@ -40,9 +40,7 @@ function EmailCapture({ activity, city }: { activity: string; city: string }) {
   if (sent) {
     return (
       <div className="border-border border-t py-10">
-        <p className="font-mono text-sm text-text">
-          Sent. Check your email — your plan is there.
-        </p>
+        <p className="text-text font-mono text-sm">Sent. Check your email — your plan is there.</p>
       </div>
     );
   }
@@ -50,9 +48,7 @@ function EmailCapture({ activity, city }: { activity: string; city: string }) {
   return (
     <div className="border-border border-t py-10">
       <p className="font-heading text-xl font-bold">Email me this plan.</p>
-      <p className="text-muted mt-2 text-sm">
-        No updates. No spam. Just your plan, saved.
-      </p>
+      <p className="text-muted mt-2 text-sm">No updates. No spam. Just your plan, saved.</p>
       <form onSubmit={handleSubmit} className="mt-5 flex gap-3">
         <input
           type="email"
@@ -86,7 +82,7 @@ function PaidContent({ plan }: { plan: Plan }) {
     <div className="space-y-12 py-10">
       {/* Comfort stat — hero element, surfaces first behind the gate */}
       <div>
-        <div className="text-accent font-heading text-[72px] font-bold leading-none">
+        <div className="text-accent font-heading text-[72px] leading-none font-bold">
           {comfort_stat.percentage}%
         </div>
         <p className="text-muted mt-3 max-w-sm text-base">{comfort_stat.label}</p>
@@ -95,26 +91,26 @@ function PaidContent({ plan }: { plan: Plan }) {
 
       {/* First-hour script */}
       <div>
-        <p className="text-muted mb-6 font-mono text-xs font-bold uppercase tracking-widest">
+        <p className="text-muted mb-6 font-mono text-xs font-bold tracking-widest uppercase">
           Your first-hour script
         </p>
         <div className="space-y-4">
           <div>
-            <span className="text-muted font-mono text-xs uppercase tracking-widest">
+            <span className="text-muted font-mono text-xs tracking-widest uppercase">
               Open with
             </span>
             <p className="mt-1 text-lg font-medium">&ldquo;{opener}&rdquo;</p>
           </div>
           {followups.map((line, i) => (
             <div key={i}>
-              <span className="text-muted font-mono text-xs uppercase tracking-widest">
+              <span className="text-muted font-mono text-xs tracking-widest uppercase">
                 Follow up
               </span>
               <p className="mt-1 text-base">&ldquo;{line}&rdquo;</p>
             </div>
           ))}
           <div>
-            <span className="text-muted font-mono text-xs uppercase tracking-widest">
+            <span className="text-muted font-mono text-xs tracking-widest uppercase">
               Exit if needed
             </span>
             <p className="mt-1 text-base">&ldquo;{exit}&rdquo;</p>
@@ -163,10 +159,7 @@ export default function ResultPage() {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
         <p className="text-muted font-mono text-sm">Plan not found.</p>
-        <Link
-          href="/"
-          className="text-accent mt-4 font-mono text-sm underline underline-offset-4"
-        >
+        <Link href="/" className="text-accent mt-4 font-mono text-sm underline underline-offset-4">
           ← Start over
         </Link>
       </main>
@@ -191,17 +184,16 @@ export default function ResultPage() {
   // This fires on result view — useful for drop-off analysis
   useEffect(() => {
     if (plan) analytics.track('result_viewed', { activity: plan.activity, city: plan.city });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <main className="min-h-screen">
       <div className="mx-auto max-w-xl px-6 py-16">
-
         {/* Back nav */}
         <Link
           href="/"
-          className="text-muted font-mono text-xs uppercase tracking-widest hover:text-text"
+          className="text-muted hover:text-text font-mono text-xs tracking-widest uppercase"
           onClick={() => router.back()}
         >
           ← Back
@@ -209,12 +201,12 @@ export default function ResultPage() {
 
         {/* Event card */}
         <section className="mt-8">
-          <p className="text-muted font-mono text-xs font-bold uppercase tracking-widest">
-            Event
-          </p>
+          <p className="text-muted font-mono text-xs font-bold tracking-widest uppercase">Event</p>
           <h1 className="font-heading mt-2 text-3xl font-bold">{event.name}</h1>
           <div className="text-muted mt-3 space-y-1 font-mono text-sm">
-            <p>{event.date} · {event.time}</p>
+            <p>
+              {event.date} · {event.time}
+            </p>
             <p>{event.venue}</p>
             <p>{event.address}</p>
           </div>
@@ -230,14 +222,15 @@ export default function ResultPage() {
           )}
           {event.source === 'fallback' && (
             <p className="text-muted mt-3 font-mono text-xs">
-              No live events found — link goes to meetup.com search for {plan.activity} in {plan.city}.
+              No live events found — link goes to meetup.com search for {plan.activity} in{' '}
+              {plan.city}.
             </p>
           )}
         </section>
 
         {/* Briefing */}
         <section className="border-border mt-10 border-t pt-10">
-          <p className="text-muted font-mono text-xs font-bold uppercase tracking-widest">
+          <p className="text-muted font-mono text-xs font-bold tracking-widest uppercase">
             Briefing
           </p>
           <h2 className="font-heading mt-2 text-xl font-bold">{briefing.headline}</h2>
@@ -251,15 +244,13 @@ export default function ResultPage() {
           </ul>
           <div className="mt-6 space-y-2">
             <p className="text-sm">
-              <span className="text-muted font-mono text-xs uppercase tracking-widest">
+              <span className="text-muted font-mono text-xs tracking-widest uppercase">
                 What to wear:{' '}
               </span>
               {briefing.what_to_wear}
             </p>
             <p className="text-sm">
-              <span className="text-muted font-mono text-xs uppercase tracking-widest">
-                Vibe:{' '}
-              </span>
+              <span className="text-muted font-mono text-xs tracking-widest uppercase">Vibe: </span>
               {briefing.vibe}
             </p>
           </div>
@@ -271,12 +262,10 @@ export default function ResultPage() {
         {/* PayGate — comfort stat + script behind $9 */}
         <section className="border-border border-t pt-10">
           <div className="mb-8">
-            <p className="font-heading text-xl font-bold">
-              The part that makes you actually go.
-            </p>
+            <p className="font-heading text-xl font-bold">The part that makes you actually go.</p>
             <p className="text-muted mt-2 text-sm">
-              Your comfort stat for {plan.activity} groups in {plan.city}.
-              Then a word-for-word script for your first hour.
+              Your comfort stat for {plan.activity} groups in {plan.city}. Then a word-for-word
+              script for your first hour.
             </p>
           </div>
           <PayGate
@@ -292,7 +281,6 @@ export default function ResultPage() {
             <PaidContent plan={plan} />
           </PayGate>
         </section>
-
       </div>
     </main>
   );

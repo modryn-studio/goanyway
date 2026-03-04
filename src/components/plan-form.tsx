@@ -55,7 +55,7 @@ export default function PlanForm() {
       }
 
       // GenerateResponse shape: { id: string, plan: Plan }
-      const data = await res.json() as { id: string; plan: unknown };
+      const data = (await res.json()) as { id: string; plan: unknown };
 
       // Store plan in sessionStorage — result page reads it back by ID.
       // No backend store needed: plan travels with the browser session.

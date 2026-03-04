@@ -8,16 +8,17 @@ import type { PlanEvent } from '@/lib/types';
 
 const PERPLEXITY_API_URL = 'https://api.perplexity.ai/chat/completions';
 
-export async function searchEvent(
-  activity: string,
-  city: string,
-): Promise<PlanEvent | null> {
+export async function searchEvent(activity: string, city: string): Promise<PlanEvent | null> {
   const apiKey = process.env.PERPLEXITY_API_KEY;
   if (!apiKey) return null;
 
   // Month/year for recency — current server time in UTC
   const now = new Date();
-  const monthYear = now.toLocaleString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+  const monthYear = now.toLocaleString('en-US', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
 
   const query = `${activity} events ${city} ${monthYear} site:eventbrite.com OR site:meetup.com OR site:lu.ma`;
 

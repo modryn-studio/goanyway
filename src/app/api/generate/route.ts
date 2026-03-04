@@ -21,7 +21,7 @@ async function callGPT(
   activity: string,
   city: string,
   comfort_level: number,
-  event: PlanEvent | null,
+  event: PlanEvent | null
 ): Promise<Partial<Plan> | null> {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return null;
@@ -52,7 +52,7 @@ async function callClaude(
   activity: string,
   comfort_level: number,
   gptComfortReassurance: string,
-  gptScriptReassurance: string,
+  gptScriptReassurance: string
 ): Promise<{ comfort_reassurance: string; script_reassurance: string } | null> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) return null;
@@ -62,7 +62,7 @@ async function callClaude(
     activity,
     comfort_level,
     gptComfortReassurance,
-    gptScriptReassurance,
+    gptScriptReassurance
   );
 
   const message = await anthropic.messages.create({
@@ -83,11 +83,7 @@ async function callClaude(
 // ---------------------------------------------------------------------------
 // Fallback plan — when APIs aren't configured (dev / missing keys)
 // ---------------------------------------------------------------------------
-function buildFallbackPlan(
-  activity: string,
-  city: string,
-  comfort_level: number,
-): Partial<Plan> {
+function buildFallbackPlan(activity: string, city: string, comfort_level: number): Partial<Plan> {
   return {
     event: {
       name: `${city} ${activity.charAt(0).toUpperCase() + activity.slice(1)} Meetup`,
@@ -119,13 +115,9 @@ function buildFallbackPlan(
         comfort_level <= 2
           ? "You don't need an opener. Show up, observe, leave if you want."
           : `"Is this your first time here too?" — works in almost every ${activity} group.`,
-      followups: [
-        `"How long have you been doing ${activity}?"`,
-        '"What made you try this group?"',
-      ],
+      followups: [`"How long have you been doing ${activity}?"`, '"What made you try this group?"'],
       exit: '"I have to head out — this was great though."',
-      reassurance:
-        'You do not have to be on the whole time. One conversation counts as a win.',
+      reassurance: 'You do not have to be on the whole time. One conversation counts as a win.',
     },
   };
 }
@@ -142,17 +134,14 @@ export async function POST(req: Request): Promise<Response> {
     try {
       body = (await req.json()) as GenerateRequest;
     } catch {
-      return log.end(
-        ctx,
-        Response.json({ error: 'Invalid JSON' }, { status: 400 }),
-      );
+      return log.end(ctx, Response.json({ error: 'Invalid JSON' }, { status: 400 }));
     }
 
     const { activity, city, comfort_level } = body;
     if (!activity?.trim() || !city?.trim() || !comfort_level) {
       return log.end(
         ctx,
-        Response.json({ error: 'activity, city, and comfort_level are required' }, { status: 400 }),
+        Response.json({ error: 'activity, city, and comfort_level are required' }, { status: 400 })
       );
     }
 
@@ -197,9 +186,12 @@ export async function POST(req: Request): Promise<Response> {
         activity.trim(),
         comfort_level,
         gptComfortReassurance,
-        gptScriptReassurance,
+        gptScriptReassurance
       );
-      log.info(ctx.reqId, claudeRewrite ? 'Claude rewrite complete' : 'Claude not configured — using GPT lines');
+      log.info(
+        ctx.reqId,
+        claudeRewrite ? 'Claude rewrite complete' : 'Claude not configured — using GPT lines'
+      );
     } catch (err) {
       log.warn(ctx.reqId, 'Claude error — using GPT lines', { err: String(err) });
     }

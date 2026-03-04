@@ -11,7 +11,7 @@ export function buildBriefingPrompt(
   activity: string,
   city: string,
   comfort_level: number,
-  event: PlanEvent | null,
+  event: PlanEvent | null
 ) {
   const eventContext = event
     ? `Event found:\n- Name: ${event.name}\n- Date: ${event.date} at ${event.time}\n- Venue: ${event.venue}, ${event.address}\n- Description: ${event.description}`

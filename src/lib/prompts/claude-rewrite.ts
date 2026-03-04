@@ -14,7 +14,7 @@ export function buildClaudeRewritePrompt(
   activity: string,
   comfort_level: number,
   gptComfortReassurance: string,
-  gptScriptReassurance: string,
+  gptScriptReassurance: string
 ) {
   const comfortContext =
     comfort_level <= 2

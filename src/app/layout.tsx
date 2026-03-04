@@ -37,6 +37,7 @@ export const metadata: Metadata = {
     title: site.ogTitle,
     description: site.ogDescription,
     creator: site.social.twitterHandle,
+    site: site.social.twitterHandle,
   },
 };
 
