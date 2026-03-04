@@ -42,14 +42,16 @@ export async function POST(req: Request): Promise<Response> {
 
     const resend = new Resend(apiKey);
 
-    // Add to audience (if configured)
+    // Add to segment (if configured).
+    // Resend's current API: contacts.create() takes segments: [{ id }], not audienceId.
+    // RESEND_SEGMENT_ID is a segment inside the shared Resend team — each project gets its own.
     if (audienceId) {
       await resend.contacts.create({
-        audienceId,
         email: email.trim().toLowerCase(),
         unsubscribed: false,
+        segments: [{ id: audienceId }],
       });
-      log.info(ctx.reqId, 'Contact added to audience', { audienceId });
+      log.info(ctx.reqId, 'Contact added to segment', { segmentId: audienceId });
     }
 
     // Send plan confirmation email
