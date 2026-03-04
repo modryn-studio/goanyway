@@ -101,7 +101,7 @@ export default function FeedbackWidget() {
             placeholder="What's broken? What's missing? What do you need?"
             disabled={state === 'submitting'}
             rows={4}
-            className="border-border placeholder:text-muted-foreground focus:border-accent w-full resize-none border bg-transparent p-3 font-mono text-sm transition-colors outline-none disabled:opacity-50"
+            className="w-full resize-none border border-(--color-border) bg-transparent p-3 font-mono text-sm transition-colors outline-none placeholder:text-(--color-muted) focus:border-(--color-accent) disabled:opacity-50"
           />
           <input
             type="email"
@@ -110,14 +110,14 @@ export default function FeedbackWidget() {
             onKeyDown={handleKeyDown}
             placeholder="Email (optional — for a reply)"
             disabled={state === 'submitting'}
-            className="border-border placeholder:text-muted-foreground focus:border-accent mt-2 w-full border bg-transparent p-3 font-mono text-xs transition-colors outline-none disabled:opacity-50"
+            className="mt-2 w-full border border-(--color-border) bg-transparent p-3 font-mono text-xs transition-colors outline-none placeholder:text-(--color-muted) focus:border-(--color-accent) disabled:opacity-50"
           />
-          {error && <p className="text-destructive mt-2 font-mono text-xs">{error}</p>}
+          {error && <p className="mt-2 font-mono text-xs text-red-500">{error}</p>}
           <div className="mt-3 flex justify-end">
             <button
               onClick={handleSubmit}
               disabled={!message.trim() || state === 'submitting'}
-              className="bg-accent hover:bg-accent/90 disabled:bg-muted flex items-center gap-2 px-4 py-2 font-mono text-xs font-bold text-white transition-colors disabled:cursor-not-allowed disabled:text-white/50"
+              className="flex items-center gap-2 bg-(--color-accent) px-4 py-2 font-mono text-xs font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Send size={12} />
               {state === 'submitting' ? 'Sending...' : 'Send'}
@@ -129,11 +129,11 @@ export default function FeedbackWidget() {
   );
 
   const panelHeader = (
-    <div className="border-border flex items-center justify-between border-b px-4 py-3">
+    <div className="flex items-center justify-between border-b border-(--color-border) px-4 py-3">
       <span className="font-mono text-xs font-bold tracking-widest uppercase">Feedback</span>
       <button
         onClick={close}
-        className="text-muted-foreground hover:text-foreground -mr-1 p-1 transition-colors"
+        className="-mr-1 p-1 text-(--color-muted) transition-colors hover:text-(--color-text)"
         aria-label="Close"
       >
         <X size={14} />
@@ -151,7 +151,7 @@ export default function FeedbackWidget() {
       >
         {/* Tap-outside backdrop */}
         {isOpen && <div className="fixed inset-0 -z-10 bg-black/20" onClick={close} />}
-        <div className="border-border bg-background border-t-2 shadow-2xl">
+        <div className="border-t-2 border-(--color-border) bg-(--color-surface) shadow-2xl">
           {panelHeader}
           {formBody}
         </div>
@@ -168,13 +168,13 @@ export default function FeedbackWidget() {
         {/* Tab — leftmost, always the visible "handle" */}
         <button
           onClick={() => setState(isOpen ? 'idle' : 'open')}
-          className="border-border bg-background hover:bg-muted text-accent flex shrink-0 items-center border-y-2 border-l-2 px-1.5 py-3 font-mono text-[0.6rem] font-bold tracking-widest uppercase shadow-md transition-colors"
+          className="flex shrink-0 items-center border-y-2 border-l-2 border-(--color-border) bg-(--color-surface) px-1.5 py-3 font-mono text-[0.6rem] font-bold tracking-widest text-(--color-accent) uppercase shadow-md transition-colors hover:bg-(--color-border)"
           aria-label={isOpen ? 'Close feedback' : 'Open feedback'}
         >
           <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>Feedback</span>
         </button>
         {/* Panel — slides in with the tab */}
-        <div className="border-border bg-background w-72 border-2 shadow-xl">
+        <div className="w-72 border-2 border-(--color-border) bg-(--color-surface) shadow-xl">
           {panelHeader}
           {formBody}
         </div>

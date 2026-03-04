@@ -10,6 +10,7 @@
     "check-deps": "npx npm-check-updates"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.576.0",
     "next": "^16.1.6",
