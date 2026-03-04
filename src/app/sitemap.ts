@@ -1,7 +1,16 @@
 import { MetadataRoute } from 'next';
+
 import { site } from '@/config/site';
+import { getPseoCombos } from '@/../content/pseo/combos';
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const pseoRoutes: MetadataRoute.Sitemap = getPseoCombos().map(({ activitySlug, citySlug }) => ({
+    url: `${site.url}/tools/goanyway/${activitySlug}/${citySlug}`,
+    lastModified: new Date('2026-03-04'),
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }));
+
   return [
     {
       url: site.url,
@@ -27,6 +36,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.2,
     },
-    // TODO: add pSEO routes here once /tools/goanyway/[activity]/[city] is built (Issue #9)
+    ...pseoRoutes,
   ];
 }
