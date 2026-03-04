@@ -64,8 +64,10 @@ if (-not (Get-Command magick -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
-# ── Read site name from site.ts (for OG image + banner text) ─────────────────
-$siteName = "Your Site"
+# ── Read site name + brand colors from site.ts ───────────────────────────────
+$siteName   = "Your Site"
+$bgColor    = "#111111"
+$accentColor = "#6366f1"
 $siteTs = "src\config\site.ts"
 if (Test-Path $siteTs) {
     $nameLine = Select-String -Path $siteTs -Pattern "name:\s*'([^']+)'" | Select-Object -First 1
@@ -74,6 +76,16 @@ if (Test-Path $siteTs) {
         if ($match.Success -and $match.Groups[1].Value -notmatch 'TODO') {
             $siteName = $match.Groups[1].Value
         }
+    }
+    $bgLine = Select-String -Path $siteTs -Pattern "bg:\s*'(#[0-9a-fA-F]{3,8})'" | Select-Object -First 1
+    if ($bgLine) {
+        $match = [regex]::Match($bgLine.Line, "bg:\s*'(#[0-9a-fA-F]{3,8})'")
+        if ($match.Success) { $bgColor = $match.Groups[1].Value }
+    }
+    $accentLine = Select-String -Path $siteTs -Pattern "accent:\s*'(#[0-9a-fA-F]{3,8})'" | Select-Object -First 1
+    if ($accentLine) {
+        $match = [regex]::Match($accentLine.Line, "accent:\s*'(#[0-9a-fA-F]{3,8})'")
+        if ($match.Success) { $accentColor = $match.Groups[1].Value }
     }
 }
 
@@ -103,14 +115,14 @@ Write-Host "  + public/icon-light.png"
 Write-Host "  + public/icon-dark.png"
 
 # ── icon.png: manifest + JSON-LD (dark bg, white/inverted mark) ──────────────
-magick -size 1024x1024 xc:"#111111" `
+magick -size 1024x1024 xc:"$bgColor" `
     '(' $logomark -channel RGB -negate -resize 800x800 ')' `
     -gravity Center -composite "public\icon.png"
 Write-Host "  + public/icon.png"
 
 # ── apple-icon.png: iOS home screen (dark bg, 180x180) ───────────────────────
 if (-not (Test-Path "src\app")) { New-Item -ItemType Directory -Path "src\app" | Out-Null }
-magick -size 180x180 xc:"#111111" `
+magick -size 180x180 xc:"$bgColor" `
     '(' $logomark -channel RGB -negate -resize 140x140 ')' `
     -gravity Center -composite "src\app\apple-icon.png"
 Write-Host "  + src/app/apple-icon.png"
@@ -120,11 +132,11 @@ magick $logomark -define icon:auto-resize=48,32,16 "public\favicon.ico"
 Write-Host "  + public/favicon.ico"
 
 # ── og-image.png: 1200x630 social card ───────────────────────────────────────
-magick -size 1200x630 xc:"#111111" `
+magick -size 1200x630 xc:"$bgColor" `
     '(' $logomark -channel RGB -negate -resize 100x100 ')' `
     -gravity North -geometry +0+75 -composite `
     -gravity North -font "Arial-Bold" -pointsize 88 -fill "#e5e5e5" -annotate +0+230 $siteName `
-    -fill "#6366f1" -draw "rectangle 0,618 1200,630" `
+    -fill "$accentColor" -draw "rectangle 0,618 1200,630" `
     "public\og-image.png"
 Write-Host "  + public/og-image.png"
 
@@ -135,7 +147,7 @@ if (Test-Path $banner) {
 } else {
     Write-Host "  + public/brand/banner.png (auto-generated)"
     if (-not (Test-Path "public\brand")) { New-Item -ItemType Directory -Path "public\brand" | Out-Null }
-    magick -size 1280x320 xc:"#111111" `
+    magick -size 1280x320 xc:"$bgColor" `
         '(' $logomark -channel RGB -negate -resize 160x160 ')' `
         -gravity West -geometry +100+0 -composite `
         -gravity West -font "Arial-Bold" -pointsize 72 -fill "#e5e5e5" -annotate +300+0 $siteName `
