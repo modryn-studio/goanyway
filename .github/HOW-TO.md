@@ -134,9 +134,11 @@ Drop your logomark, type `/assets`, done.
 
 - `public/brand/logomark.png` — 1024×1024, your mark on a transparent background
 
-**Optional:**
+**Stop here if your mark is colored** (e.g. amber, blue, any hue that reads on both light and dark backgrounds). Single mode is correct — `logomark.png` gets used for both favicon modes. You do not need `logomark-dark.png`.
 
-- `public/brand/logomark-dark.png` — white/light version of the mark. If present, enables light/dark favicon switching. If absent, `logomark.png` is used for both modes (fine for colored marks).
+**Optional — only if your mark is white or very light:**
+
+- `public/brand/logomark-dark.png` — your mark as it should appear on dark backgrounds. Only needed when `logomark.png` is a white/light mark intended for light mode only. If present, enables separate light/dark favicon files.
 - `public/brand/banner.png` — 1280×320 README header. Auto-generated from your logomark if missing.
 
 Then type `/assets` in chat — it checks prerequisites, runs the generator, and commits the output automatically.
