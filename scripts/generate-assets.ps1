@@ -131,7 +131,7 @@ Write-Host "  + public/og-image.png"
 # ── banner.png: 1280x320 README header ───────────────────────────────────────
 # Generated only if not already provided by the user.
 if (Test-Path $banner) {
-    Write-Host "  ~ public/brand/banner.png (skipped — file already exists)"
+    Write-Host "  ~ public/brand/banner.png (skipped - file already exists)"
 } else {
     Write-Host "  + public/brand/banner.png (auto-generated)"
     if (-not (Test-Path "public\brand")) { New-Item -ItemType Directory -Path "public\brand" | Out-Null }
