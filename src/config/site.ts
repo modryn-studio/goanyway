@@ -14,8 +14,8 @@ export const site = {
     'Pick your activity and city. Get one real event, a what-to-expect briefing, and a word-for-word script for your first hour. $9 to stop bailing.',
   founder: 'Luke Hanner',
   // Brand colors — used in manifest theme_color / background_color
-  accent: '#F59E0B', // warm amber
-  bg: '#050505', // dark mode base
+  accent: '#F5A623', // warm amber — differentiated from Tailwind amber-500
+  bg: '#1A1713', // warm near-black — supports amber accent, avoids cool-gray tech feel
   // Social profiles — used in footer links and Twitter card metadata.
   social: {
     twitter: 'https://x.com/lukehanner',

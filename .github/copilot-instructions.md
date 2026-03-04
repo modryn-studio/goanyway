@@ -55,11 +55,13 @@ Two user types: (1) **Aware** — RSVPd three times and bailed three times, acti
 - Honest about what the tool is: a plan, not a guarantee. It gets you to the door. You walk through it.
 - Never use: "empower, seamless, journey, connect, unlock, transform, discover, community-driven, game-changer, leverage"
 - Dark mode base, system toggle available
-- Accent: Warm amber #F59E0B — CTAs, event cards, key stats
-- Fonts: Space Grotesk (headlines + UI) + Inter (body)
+- Background: `#1A1713` — warm near-black. Not cool-gray, not slate.
+- Accent: `#F5A623` — warm amber for CTAs, event cards, key stats
+- Fonts: Space Grotesk (headlines + UI) + DM Sans (body)
 - Motion: Minimal. Single fade-in on result reveal. No looping animations.
 - No stock photos of smiling friend groups. No fake testimonials. No confetti. No wellness-app gradients.
-- Emotional arc: Land → "Someone named the problem." Read → "This is specific enough to be real." Scroll → "I want to see my plan." Convert → "Nine dollars to stop bailing on myself. Fine." *(The $9 is a commitment device — design the PayGate to feel like a decision, not a transaction.)*
+- **Comfort stat visual rule:** Render the percentage at 64–72px — big number first, supporting sentence below at normal body size. Not a paragraph. A number that stops the scroll.
+- Emotional arc: Land → "Someone named the problem." Read → "This is specific enough to be real." Scroll → "I want to see my plan." Convert → "Nine dollars to stop bailing on myself. Fine." _(The $9 is a commitment device — design the PayGate to feel like a decision, not a transaction.)_
 - **pSEO copy rule:** Activity-first users (Type 2) arrive not knowing they need this. Never mention loneliness, making friends, or feeling alone on pSEO pages. Speak to the activity: "Find a real upcoming event, know exactly what to say when you show up."
 - **Comfort stat is the hero element**, not the script. "68% of people at their first hiking club came alone" removes the fear of being visibly weird — that's the specific terror that causes bailing. Surface it first behind the gate.
 

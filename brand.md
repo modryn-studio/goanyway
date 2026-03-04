@@ -20,10 +20,12 @@
 ## Visual Rules
 
 - Color mode: Dark mode base, system toggle available
-- Accent color: Warm amber — #F59E0B — used for CTAs, event cards, and key stats
-- Fonts: Space Grotesk (headlines + UI) + Inter (body copy)
+- Background: `#1A1713` — warm near-black. Not cool-gray, not slate. The amber accent needs a warm-dark foundation to land correctly.
+- Accent color: `#F5A623` — warm amber used for CTAs, event cards, and key stats. (Not Tailwind's `#F59E0B` — one degree warmer, slightly differentiated.)
+- Fonts: Space Grotesk (headlines + UI) + DM Sans (body copy). Inter is the invisible default of the entire web — DM Sans reads the same weight but warmer, more like a person talking than an interface.
 - Motion: Minimal. Single fade-in on result reveal. No looping animations.
 - Avoid: No stock photos of smiling friend groups. No fake testimonials. No confetti. No gradients that feel like a wellness app.
+- Comfort stat treatment: The percentage number renders at 64–72px — not a sentence, a number that hits before you read it. "68%" stops the scroll. The supporting text runs below at normal body size.
 
 ---
 
@@ -47,7 +49,7 @@
 - Paygate reassurance: "One time. No subscription. Yours to keep."
 - Email capture (at PayGate wall): "Email me my plan."
 - Follow-up email subject: "Did you go?"
-- Comfort stat format: "68% of people at their first hiking club event came alone. You won't be the only one." _(This line does more work than the script. It removes the fear of being visibly alone. It's the real unlock.)_
+- Comfort stat format: "68% of people at their first hiking club event came alone. You won't be the only one." _(This line does more work than the script. It removes the fear of being visibly alone. It's the real unlock. Render the percentage at 64–72px — big number first, sentence below. Not a paragraph. A signal.)_
 - Footer: "Built by Luke because he's also bailed on a few Meetups."
 - Error: "Something went wrong generating your plan. Try again — it usually works."
 - Empty state (no event found): "We couldn't find a live event for that city. Here's what to search for instead →"
