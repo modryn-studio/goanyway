@@ -42,7 +42,9 @@ Usage: switch to Agent mode, then type:
 
 ## Slash Commands
 
-**`/init`** — New project setup. Reads `context.md` + `brand.md` + `development-principles.md` and fills in the TODO sections of `copilot-instructions.md` and `src/config/site.ts`. Run this once at the start of every new project.
+**`/init`** — New project setup. Reads `context.md` + `brand.md` + `development-principles.md` and fills in the TODO sections of `copilot-instructions.md` and `src/config/site.ts`. Run this **once at the start of every new project**. Do not re-run it after setup — use `/update` instead.
+
+**`/update`** — Cascade source doc changes. Run this any time you edit `context.md` or `brand.md` after `/init` has already run. Re-reads all three source files and updates the derived files that are out of sync: `copilot-instructions.md`, `src/config/site.ts`, `next.config.ts`. Does not re-run setup steps (component wiring, Stripe, etc.).
 
 **`/tool`** — Register this project as a tool on modrynstudio.com. Opens a PR on `modryn-studio/modryn-studio-v2` with the tool JSON. Run it when you add the tool and again when you ship (to flip status to `live`, add URL, screenshot, and launch date).
 
@@ -79,7 +81,8 @@ Configured via `editor.formatOnSave: true` in `.vscode/settings.json`. Requires 
 ├── agents/
 │   └── check.agent.md             ← @check agent (pre-ship quality gate)
 ├── prompts/
-│   ├── init.prompt.md             ← /init command (fills copilot-instructions + site.ts from context.md + brand.md)
+│   ├── init.prompt.md             ← /init command (one-time setup: fills copilot-instructions + site.ts from source docs)
+│   ├── update.prompt.md           ← /update command (cascade edits to context.md/brand.md into derived files)
 │   ├── assets.prompt.md           ← /assets command (generate favicons, icons, OG image, banner)
 │   ├── tool.prompt.md             ← /tool command (register/update tool on modrynstudio.com → PR)
 │   ├── deps.prompt.md             ← /deps command (update checker)
@@ -98,9 +101,19 @@ src/lib/
 └── analytics.ts                   ← GA4 event tracking abstraction (analytics.track)
 scripts/
 └── generate-assets.ps1            ← Generates all favicons, icons, OG image, and banner from your logomark
-context.md                         ← Fill this in per project (product facts + routes)
-brand.md                           ← Fill this in per project (voice, visuals, copy examples)
-development-principles.md          ← Permanent product philosophy — do not edit per project
+context.md                         ← SOURCE OF TRUTH: product facts, stack, routes, monetization
+brand.md                           ← SOURCE OF TRUTH: voice, visuals, user types, copy examples
+development-principles.md          ← SOURCE OF TRUTH: product philosophy — permanent, do not edit per project
+```
+
+> **Cascade rule:** `context.md`, `brand.md`, and `development-principles.md` are the source of truth. Edit them → run `/update` immediately. `copilot-instructions.md`, `site.ts`, and `next.config.ts` are derived — do not edit them directly.
+
+| Source edited | Run |
+| --- | --- |
+| Any source doc (first time, new project) | `/init` |
+| Any source doc (after init already ran) | `/update` |
+
+```
 ```
 
 ## Brand Assets
@@ -161,5 +174,7 @@ Run these in order when shipping this product:
 2. **Build** → switch to Agent mode and execute
 3. **Ship** → type `@check`
 4. **Push** → review the commit diff, then `git push` yourself
+
+> After editing `context.md` or `brand.md` → run `/update` before continuing to build. Skip this and Copilot works off stale context.
 
 > Tip: `Configure Chat (gear icon) > Diagnostics` shows all loaded configs and errors.
