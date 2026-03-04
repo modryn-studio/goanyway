@@ -2,7 +2,9 @@
 
 ## Who I Am
 
-Luke Hanner — solo builder, AI-assisted, shipping fast. GoAnyway turns the anxiety of attending your first social group into a clear, actionable plan. Input your activity, city, and comfort level — get one real event, a "what to expect" briefing, and a first-hour script. Built for people who've RSVPd three times and bailed three times. They don't need help finding groups — they need someone to tell them exactly what happens when they walk in.
+Luke Hanner — solo builder, AI-assisted, shipping fast. GoAnyway turns the anxiety of attending your first social group into a clear, actionable plan. Input your activity, city, and comfort level — get one real event, a "what to expect" briefing, and a first-hour script.
+
+Two user types: (1) **Aware** — RSVPd three times and bailed three times, actively searching for help, finds this via Reddit. (2) **Activity-first** — stuck in managed isolation, searches "hiking clubs Denver for adults", arrives via pSEO, never identifies as lonely. The pSEO copy must not name their loneliness — speak to the activity, not the need.
 
 ## Stack
 
@@ -12,10 +14,10 @@ Luke Hanner — solo builder, AI-assisted, shipping fast. GoAnyway turns the anx
 - GA4 for custom event tracking (via `@/lib/analytics.ts` — never call `gtag()` directly)
 - Vercel Analytics `<Analytics />` component in `layout.tsx` for pageviews only — do not use their `track()` API
 - Resend — email list capture, studio-wide broadcast, future nurture
-- Stripe Payment Link — $9 one-time PayGate for full script + city-specific event data
-- OpenAI GPT-5 mini — primary model for briefing + script generation (not yet installed)
-- Anthropic Claude Sonnet 4.6 — secondary/fallback for emotionally-calibrated script copy (not yet installed)
-- Perplexity — event lookup engine for live web search (not yet installed)
+- Stripe Checkout Session — $9 one-time PayGate via `/api/checkout`. Session metadata carries `activity`, `city`, `comfort_level` through the redirect to `/confirm`. The $9 is also a commitment device — a person who paid is materially more likely to attend. (not yet installed)
+- OpenAI GPT-5 mini (`gpt-5-mini`) — generates structured JSON: event card, briefing, script shell, starters. ~$0.003/call (not yet installed)
+- Anthropic Claude Sonnet 4.6 (`claude-sonnet-4-6`) — rewrites the 2-3 emotionally loaded lines: comfort stat, script reassurance. ~$0.015/call. Do not use Haiku — saves $0.01, produces noticeably flatter copy (not yet installed)
+- Perplexity Search API — returns ranked live web results for events. Not the sonar chat model. Query format: `"[activity] events [city] [month year] site:eventbrite.com OR site:meetup.com OR site:lu.ma"` (not yet installed)
 - Telnyx — SMS reminders + "Did you go?" follow-up (not yet installed)
 
 ## Project Structure
@@ -34,14 +36,14 @@ Luke Hanner — solo builder, AI-assisted, shipping fast. GoAnyway turns the anx
 ## Route Map
 
 - `/` → Hero + input form (activity type, city, comfort level 1–5)
-- `/result` → AI-generated output: event card, briefing (free) + PayGate wall before full script
-- `/confirm` → Post-PayGate: full script unlocked, email/SMS capture
+- `/result` → AI-generated output: event card, briefing (free), **email capture before the PayGate wall** ("Email me my plan" — highest-capture point), then PayGate. Comfort stat surfaces first behind the gate.
+- `/confirm` → Post-payment: full script unlocked, **SMS opt-in only** (email was already captured at the wall). Reads plan data from Stripe session metadata via `?session_id=` — not sessionStorage.
 - `/privacy` → Privacy policy
 - `/terms` → Terms of service
 - `/tools/goanyway/[activity]/[city]` → pSEO page per activity + city combination
-- `/api/generate` → POST: form inputs → GPT-5 mini + Perplexity → structured briefing JSON
-- `/api/email` → POST: Resend — adds email to list, triggers follow-up sequence
-- `/api/checkout` → POST: Stripe checkout session (fallback if not using Payment Links)
+- `/api/generate` → POST: (1) Perplexity Search API finds event, (2) GPT-5 mini generates structured JSON, (3) Claude Sonnet 4.6 rewrites comfort stat + script reassurance lines. Comfort level 1-2 = lowest-friction format (drop-in, no talking required), 3 = balanced, 4-5 = direct script only
+- `/api/email` → POST: Resend — adds email to list, triggers "Did you go?" follow-up sequence
+- `/api/checkout` → POST: Stripe Checkout Session with `activity`, `city`, `comfort_level` in metadata. Success URL: `/confirm?session_id={CHECKOUT_SESSION_ID}`
 - `/api/feedback` → POST: feedback + newsletter signup handler
 - `/api/sms` → POST: Telnyx — register phone, schedule reminder + follow-up
 - `/api/sms/webhook` → POST: Telnyx inbound webhook — "Did you go?" reply logging
@@ -57,7 +59,9 @@ Luke Hanner — solo builder, AI-assisted, shipping fast. GoAnyway turns the anx
 - Fonts: Space Grotesk (headlines + UI) + Inter (body)
 - Motion: Minimal. Single fade-in on result reveal. No looping animations.
 - No stock photos of smiling friend groups. No fake testimonials. No confetti. No wellness-app gradients.
-- Emotional arc: Land → "Someone named the problem." Read → "This is specific enough to be real." Scroll → "I want to see my plan." Convert → "Nine dollars to stop bailing on myself. Fine."
+- Emotional arc: Land → "Someone named the problem." Read → "This is specific enough to be real." Scroll → "I want to see my plan." Convert → "Nine dollars to stop bailing on myself. Fine." *(The $9 is a commitment device — design the PayGate to feel like a decision, not a transaction.)*
+- **pSEO copy rule:** Activity-first users (Type 2) arrive not knowing they need this. Never mention loneliness, making friends, or feeling alone on pSEO pages. Speak to the activity: "Find a real upcoming event, know exactly what to say when you show up."
+- **Comfort stat is the hero element**, not the script. "68% of people at their first hiking club came alone" removes the fear of being visibly weird — that's the specific terror that causes bailing. Surface it first behind the gate.
 
 ## README Standard
 

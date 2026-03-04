@@ -7,7 +7,9 @@ Input your activity, city, and comfort level — get one real event, a full "wha
 
 ## Target User
 
-(Theoretical) Marcus, 26, moved to a new city 8 months ago. He has a full-time remote job, a few online friends, and zero local ones. He's RSVPd to three Meetup events and bailed on all three. He doesn't need help finding groups — he needs someone to tell him exactly what will happen when he walks in, what to say, and that it's normal to feel this way.
+**Type 1 — Marcus (v1 user):** 26, moved to a new city 8 months ago. Full-time remote job, a few online friends, zero local ones. RSVPd to three Meetup events and bailed on all three. He doesn't need help finding groups — he needs someone to tell him exactly what will happen when he walks in, what to say, and that it's normal to feel this way. He will search r/lonely or r/socialskills. He'll find this product and immediately recognize it.
+
+**Type 2 — Managed isolation user (larger segment, higher conversion):** Has some social life, not in crisis, but slowly stopped trying. Doesn't identify as lonely. Will never type "how do I make friends" into Google. Searches for specific activities: "hiking clubs Denver for adults", "book clubs Austin". The pSEO play hits this user at intent. The copy must not name their loneliness — it should be activity-first, outcome-focused. They convert because the product is practical, not because it named their pain.
 
 ## URL
 
@@ -16,12 +18,12 @@ https://modrynstudio.com/tools/goanyway
 ## Stack Additions
 
 - **Resend** — email list capture, studio-wide broadcast, future nurture
-- **Telnyx** — SMS: event reminder (T-1hr) + "Did you go?" follow-up (T+3hrs post-event). Opt-in framed as a feature: "Text me a reminder before my event." Never promotional.
+- **Telnyx** — SMS loop: (1) T-1hr event reminder, (2) T+3hr "Did you go?" follow-up (the product's core data point), (3) if reply is "no" → "No worries. Same time next week?" + new event suggestion. That third message turns a bail into a re-engagement. Opt-in framed as a feature: "Text me a reminder before my event." Never promotional.
 - **Telnyx Webhooks** — inbound SMS handler for "Did you go?" reply logging
-- **Stripe Payment Link** — $9 one-time PayGate for full script + city-specific event data
+- **Stripe Checkout Session** — $9 one-time charge for full script. Use `/api/checkout` to create a session with `activity`, `city`, `comfort_level` in metadata. Session metadata survives the redirect to `/confirm` and is available in the webhook for the "Did you go?" trigger. The $9 is also a commitment device — a person who paid is materially more likely to attend than a person who didn't.
 - **OpenAI GPT-5 mini** — primary model for briefing + script generation (fast, cheap, structured output)
 - **Anthropic Claude Sonnet 4.6** — secondary/fallback for emotionally-calibrated script copy if needed
-- **Perplexity** — Event lookup engine. It searches the live web, finds Luma, Eventbrite, Meetup, Facebook Events. No dead endpoints, no API approval required.
+- **Perplexity Search API** — Returns ranked live web results for events. Use the Search API (not the sonar chat model) — it gives clean URLs and source metadata directly, no inference layer, no hallucination risk. Query format: `"[activity] events [city] [month year] site:eventbrite.com OR site:meetup.com OR site:lu.ma"`. No API approval required.
 
 ## Project Structure Additions
 
@@ -35,17 +37,17 @@ https://modrynstudio.com/tools/goanyway
 ## Route Map
 
 - `/` → Hero + input form (activity type, city, comfort level 1–5). Submits to generate flow.
-- `/result` → AI-generated output: one event card, "what to expect" briefing (free), + PayGate wall before full first-hour script and comfort stats
-- `/confirm` → Post-PayGate: full script unlocked. Email capture prompt: "Save your plan + we'll check in to see how it went" (Right now /confirm is both the "payment success" page AND the SMS/email capture. That's fine for the 48-hour build — just know that if Stripe redirects to /confirm and the user closes the tab immediately, you lose the capture. Consider making the email capture happen at the PayGate wall itself (before payment), not after. Lower risk, higher capture rate.)
-- `/api/generate` → POST: takes form inputs, calls GPT-5 mini + Perplexity, returns structured briefing JSON
+- `/result` → AI-generated output: one event card, "what to expect" briefing (free), + PayGate wall. **Email capture lives here, before payment** — "Email me my plan" framing, posts to `/api/email`. This is the highest-capture point: user is engaged, hasn't committed yet. Full first-hour script and comfort stats behind the gate.
+- `/confirm` → Post-payment: full script unlocked. **SMS opt-in only** — email was captured at the PayGate wall. "Text me a reminder before my event." → posts to `/api/sms`. Reads plan data from Stripe session metadata (via `?session_id=` param) — not sessionStorage, which is unreliable across redirects.
+- `/api/generate` → POST: takes form inputs → (1) Perplexity Search API finds one real event, (2) GPT-5 mini (`gpt-5-mini`) generates structured JSON: briefing, script shell, starters list, comfort stat placeholder, (3) Claude Sonnet 4.6 (`claude-sonnet-4-6`) rewrites the 2-3 emotionally loaded lines (comfort stat framing, first-hour script reassurance). Comfort level drives output structure: 1-2 = suggest lowest-friction format (drop-in class, no talking required), 3 = balanced, 4-5 = direct script, get out of the way.
 - `/api/email` → POST: Resend — adds email to list, triggers T+3 follow-up sequence ("Did you go?")
-- `/tools/goanyway/[activity]/[city]` → pSEO page. Same Perplexity data call as the main tool, rendered as a static-ish page per activity + city combination. Template built at launch, pages generated and submitted month 2-3.
+- `/tools/goanyway/[activity]/[city]` → pSEO page. Same Perplexity data call as the main tool. Use ISR (`revalidate: 86400`) — call Perplexity at request time, not build time. This means any activity/city combination works immediately, no build step. Add `generateStaticParams` only for top 20 combinations once there's traffic data. Template built at launch, pages indexed month 2-3.
 - `/api/sms` → POST: Telnyx — registers phone number, schedules event reminder (T-1hr) + "Did you go?" follow-up (T+3hrs post-event)
 - `/api/sms/webhook` → POST: Telnyx inbound webhook — receives "Did you go?" reply, logs yes/no to analytics, triggers optional follow-up
 
 ## Monetization
 
-`one-time-payment` — $9 Stripe Payment Link (fast path, no server code).
+`one-time-payment` — $9 Stripe Checkout Session.
 
 Free tier: activity + city → one real event card + 3-line "what to expect" summary.
 Paywall: full first-hour script, conversation starters, comfort stats ("X% of people came alone"), and city-specific event details.
@@ -53,6 +55,8 @@ Paywall: full first-hour script, conversation starters, comfort stats ("X% of pe
 PayGate trigger: wall renders immediately below the free event card on /result. No usage limit — the split is content-based, not usage-based. Free = event + 3-line briefing. Paid = full script + stats + conversation starters.
 
 The emotional hook (you're not alone, here's the event) is always free. The practical toolkit that gets you through the door costs $9.
+
+**The $9 is a commitment device.** Someone who paid $9 is materially more likely to attend than someone who didn't. The price point isn't just revenue — it's behavior change by design. Don't make it free. Don't lower it.
 
 ## Distribution & Monetization
 
