@@ -26,6 +26,7 @@
 - Motion: Minimal. Single fade-in on result reveal. No looping animations.
 - Avoid: No stock photos of smiling friend groups. No fake testimonials. No confetti. No gradients that feel like a wellness app.
 - Comfort stat treatment: The percentage number renders at 64–72px — not a sentence, a number that hits before you read it. "68%" stops the scroll. The supporting text runs below at normal body size.
+- Comfort level selector: 5 discrete labeled steps — not a range slider (clinical), not emoji or star ratings (wellness app). Each step has a short label. "1" must feel dignified, not shameful. The selector sets the emotional tone for the entire experience before the user sees any output.
 
 ---
 

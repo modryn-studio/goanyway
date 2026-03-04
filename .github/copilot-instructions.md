@@ -6,6 +6,8 @@ Luke Hanner — solo builder, AI-assisted, shipping fast. GoAnyway turns the anx
 
 Two user types: (1) **Aware** — RSVPd three times and bailed three times, actively searching for help, finds this via Reddit. (2) **Activity-first** — stuck in managed isolation, searches "hiking clubs Denver for adults", arrives via pSEO, never identifies as lonely. The pSEO copy must not name their loneliness — speak to the activity, not the need.
 
+The problem is **intent-to-action failure**, not awareness failure. People know what they want. They RSVP and bail. The $9 payment and the comfort stat are the real behavioral levers — not the script. The script is downstream of the fear being resolved.
+
 ## Stack
 
 - Next.js 16 (App Router) with TypeScript
@@ -13,10 +15,10 @@ Two user types: (1) **Aware** — RSVPd three times and bailed three times, acti
 - Vercel for deployment
 - GA4 for custom event tracking (via `@/lib/analytics.ts` — never call `gtag()` directly)
 - Vercel Analytics `<Analytics />` component in `layout.tsx` for pageviews only — do not use their `track()` API
-- Resend — email list capture, studio-wide broadcast, future nurture
+- Resend — email list capture, studio-wide broadcast, future nurture. Double opt-in is OFF — treat the capture as a plan-save request, not a newsletter signup. "Email me my plan" converts better than "Sign up for updates." Capture happens at the PayGate wall before payment — not on `/confirm`.
 - Stripe Checkout Session — $9 one-time PayGate via `/api/checkout`. Session metadata carries `activity`, `city`, `comfort_level` through the redirect to `/confirm`. The $9 is also a commitment device — a person who paid is materially more likely to attend. (not yet installed)
 - OpenAI GPT-5 mini (`gpt-5-mini`) — generates structured JSON: event card, briefing, script shell, starters. ~$0.003/call (not yet installed)
-- Anthropic Claude Sonnet 4.6 (`claude-sonnet-4-6`) — rewrites the 2-3 emotionally loaded lines: comfort stat, script reassurance. ~$0.015/call. Do not use Haiku — saves $0.01, produces noticeably flatter copy (not yet installed)
+- Anthropic Claude Sonnet 4.6 (`claude-sonnet-4-6`) — used specifically for the 2-3 emotionally loaded lines: comfort stat framing + script reassurance. Not a fallback — a deliberate second pass where tone is the differentiator. ~$0.015/call. Do not use Haiku — saves $0.01, produces noticeably flatter copy. (not yet installed)
 - Perplexity Search API — returns ranked live web results for events. Not the sonar chat model. Query format: `"[activity] events [city] [month year] site:eventbrite.com OR site:meetup.com OR site:lu.ma"` (not yet installed)
 - Telnyx — SMS reminders + "Did you go?" follow-up (not yet installed)
 
@@ -64,6 +66,7 @@ Two user types: (1) **Aware** — RSVPd three times and bailed three times, acti
 - Emotional arc: Land → "Someone named the problem." Read → "This is specific enough to be real." Scroll → "I want to see my plan." Convert → "Nine dollars to stop bailing on myself. Fine." _(The $9 is a commitment device — design the PayGate to feel like a decision, not a transaction.)_
 - **pSEO copy rule:** Activity-first users (Type 2) arrive not knowing they need this. Never mention loneliness, making friends, or feeling alone on pSEO pages. Speak to the activity: "Find a real upcoming event, know exactly what to say when you show up."
 - **Comfort stat is the hero element**, not the script. "68% of people at their first hiking club came alone" removes the fear of being visibly weird — that's the specific terror that causes bailing. Surface it first behind the gate.
+- **Comfort level selector:** 5 discrete labeled steps — not a range slider (clinical), not emoji or star ratings (wellness app). Each step has a short label. "1" must feel dignified, not shameful. The selector sets the emotional tone for the entire experience before the user sees any output.
 
 ## README Standard
 

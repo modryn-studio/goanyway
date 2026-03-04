@@ -5,6 +5,8 @@
 An AI tool that turns the anxiety of attending your first social group into a clear, actionable plan.
 Input your activity, city, and comfort level — get one real event, a full "what to expect" briefing, and a first-hour script so you actually walk through the door.
 
+**The problem is intent-to-action failure, not awareness failure.** People know what they want. They RSVP and bail. The $9 payment and the comfort stat ("68% came alone") are the real behavioral levers — not the script. The script is downstream of the fear being resolved.
+
 ## Target User
 
 **Type 1 — Marcus (v1 user):** 26, moved to a new city 8 months ago. Full-time remote job, a few online friends, zero local ones. RSVPd to three Meetup events and bailed on all three. He doesn't need help finding groups — he needs someone to tell him exactly what will happen when he walks in, what to say, and that it's normal to feel this way. He will search r/lonely or r/socialskills. He'll find this product and immediately recognize it.
@@ -17,12 +19,12 @@ https://modrynstudio.com/tools/goanyway
 
 ## Stack Additions
 
-- **Resend** — email list capture, studio-wide broadcast, future nurture
+- **Resend** — email list capture, studio-wide broadcast, future nurture. Double opt-in is OFF for this flow — treat the capture as a plan-save request, not a newsletter signup. "Email me my plan" converts better than "Sign up for updates." Capture happens at the PayGate wall before payment — not on /confirm.
 - **Telnyx** — SMS loop: (1) T-1hr event reminder, (2) T+3hr "Did you go?" follow-up (the product's core data point), (3) if reply is "no" → "No worries. Same time next week?" + new event suggestion. That third message turns a bail into a re-engagement. Opt-in framed as a feature: "Text me a reminder before my event." Never promotional.
 - **Telnyx Webhooks** — inbound SMS handler for "Did you go?" reply logging
 - **Stripe Checkout Session** — $9 one-time charge for full script. Use `/api/checkout` to create a session with `activity`, `city`, `comfort_level` in metadata. Session metadata survives the redirect to `/confirm` and is available in the webhook for the "Did you go?" trigger. The $9 is also a commitment device — a person who paid is materially more likely to attend than a person who didn't.
 - **OpenAI GPT-5 mini** — primary model for briefing + script generation (fast, cheap, structured output)
-- **Anthropic Claude Sonnet 4.6** — secondary/fallback for emotionally-calibrated script copy if needed
+- **Anthropic Claude Sonnet 4.6** (`claude-sonnet-4-6`) — used specifically for the 2-3 emotionally loaded lines per plan: the comfort stat framing and the first-hour script reassurance. Not a fallback — a deliberate second pass where tone is the differentiator. Do not swap for Haiku (4.5) to save $0.01 — it produces noticeably flatter copy and the voice is the product's only real differentiator.
 - **Perplexity Search API** — Returns ranked live web results for events. Use the Search API (not the sonar chat model) — it gives clean URLs and source metadata directly, no inference layer, no hallucination risk. Query format: `"[activity] events [city] [month year] site:eventbrite.com OR site:meetup.com OR site:lu.ma"`. No API approval required.
 
 ## Project Structure Additions
