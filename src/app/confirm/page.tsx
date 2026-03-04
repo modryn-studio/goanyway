@@ -13,6 +13,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import type { Plan } from '@/lib/types';
 import { analytics } from '@/lib/analytics';
+import { BASE_PATH } from '@/lib/base-path';
 
 const RECEIPT_KEY = 'payment_receipt';
 
@@ -31,7 +32,7 @@ function SmsOptIn({ activity, city }: { activity: string; city: string }) {
     if (!phone.trim() || sending) return;
     setSending(true);
     try {
-      await fetch('/api/sms', {
+      await fetch(`${BASE_PATH}/api/sms`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone: phone.trim(), activity, city }),

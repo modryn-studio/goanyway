@@ -59,9 +59,12 @@ export async function POST(req: Request): Promise<Response> {
     const activityLabel = activity ?? 'your event';
     const cityLabel = city ? ` in ${city}` : '';
 
+    const replyTo = process.env.FEEDBACK_TO ?? process.env.GMAIL_USER;
+
     await resend.emails.send({
       from: fromAddress,
       to: email.trim().toLowerCase(),
+      ...(replyTo ? { replyTo } : {}),
       subject: `Your plan for ${activityLabel}${cityLabel}`,
       text: [
         `Here's your GoAnyway plan.`,

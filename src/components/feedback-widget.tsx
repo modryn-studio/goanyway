@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { X, Send } from 'lucide-react';
 import { analytics } from '@/lib/analytics';
+import { BASE_PATH } from '@/lib/base-path';
 
 type WidgetState = 'idle' | 'open' | 'submitting' | 'done';
 
@@ -59,7 +60,7 @@ export default function FeedbackWidget() {
     setError('');
 
     try {
-      const res = await fetch('/api/feedback', {
+      const res = await fetch(`${BASE_PATH}/api/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

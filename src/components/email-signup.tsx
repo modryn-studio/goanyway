@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import { analytics } from '@/lib/analytics';
+import { BASE_PATH } from '@/lib/base-path';
 
 export default function EmailSignup() {
   const [email, setEmail] = useState('');
@@ -17,7 +18,7 @@ export default function EmailSignup() {
     setError('');
 
     try {
-      const res = await fetch('/api/feedback', {
+      const res = await fetch(`${BASE_PATH}/api/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'newsletter', email }),
@@ -61,7 +62,7 @@ export default function EmailSignup() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={submitting}
-                className="h-12 flex-1 rounded-none border-2 border-[var(--color-border)] bg-transparent px-4 font-mono text-sm placeholder:text-[var(--color-muted)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-accent)]"
+                className="h-12 flex-1 rounded-none border-2 border-[var(--color-border)] bg-transparent px-4 font-mono text-sm placeholder:text-[var(--color-muted)] focus-visible:ring-1 focus-visible:ring-[var(--color-accent)] focus-visible:outline-none"
               />
               <button
                 type="submit"

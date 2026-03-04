@@ -10,6 +10,7 @@ import Link from 'next/link';
 import PayGate from '@/components/pay-gate';
 import { analytics } from '@/lib/analytics';
 import type { Plan } from '@/lib/types';
+import { BASE_PATH } from '@/lib/base-path';
 
 // ---------------------------------------------------------------------------
 // Email capture — "Email me this plan." framing, not newsletter signup.
@@ -25,7 +26,7 @@ function EmailCapture({ activity, city }: { activity: string; city: string }) {
     if (!email.includes('@') || sending) return;
     setSending(true);
     try {
-      await fetch('/api/email', {
+      await fetch(`${BASE_PATH}/api/email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, activity, city }),
@@ -133,6 +134,12 @@ export default function ResultPage() {
 
   const id = searchParams.get('id');
 
+  // Fire analytics once when plan loads — must be declared before any early returns (Rules of Hooks)
+  useEffect(() => {
+    if (plan) analytics.track('result_viewed', { activity: plan.activity, city: plan.city });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [plan?.activity, plan?.city]);
+
   useEffect(() => {
     if (!id) {
       setNotFound(true);
@@ -179,13 +186,6 @@ export default function ResultPage() {
   }
 
   const { event, briefing } = plan;
-
-  // Fire analytics once (plan is already tracked in PlanForm on generate)
-  // This fires on result view — useful for drop-off analysis
-  useEffect(() => {
-    if (plan) analytics.track('result_viewed', { activity: plan.activity, city: plan.city });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <main className="min-h-screen">

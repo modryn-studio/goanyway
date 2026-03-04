@@ -3,6 +3,7 @@
 import { useState, useRef, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { analytics } from '@/lib/analytics';
+import { BASE_PATH } from '@/lib/base-path';
 
 // 5 discrete labeled steps.
 // Level 1 must feel dignified — "Observe" is present, not shameful.
@@ -39,7 +40,7 @@ export default function PlanForm() {
     setError('');
 
     try {
-      const res = await fetch('/api/generate', {
+      const res = await fetch(`${BASE_PATH}/api/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

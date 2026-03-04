@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { analytics } from '@/lib/analytics';
+import { BASE_PATH } from '@/lib/base-path';
 
 const RECEIPT_KEY = 'payment_receipt';
 
@@ -87,7 +88,7 @@ export default function PayGate({
 
     // Checkout Sessions mode — POST to /api/checkout for a session URL
     try {
-      const res = await fetch('/api/checkout', {
+      const res = await fetch(`${BASE_PATH}/api/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: checkoutBody ? JSON.stringify(checkoutBody) : undefined,
