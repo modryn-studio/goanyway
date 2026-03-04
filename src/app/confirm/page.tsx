@@ -1,12 +1,10 @@
 'use client';
 
 // /confirm — post-payment page.
-// Reads plan from sessionStorage (same browser session as /result).
+// Validates payment server-side via GET /api/confirm?session_id=...
+// Reads plan from sessionStorage using plan_id returned by the API.
 // Sets payment_receipt in localStorage so /result's PayGate shows paid state.
 // Shows: comfort stat + full script + SMS opt-in.
-//
-// Plan data comes from sessionStorage (written by PlanForm on /result).
-// session_id in URL params confirms Stripe payment happened.
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -16,6 +14,14 @@ import { analytics } from '@/lib/analytics';
 import { BASE_PATH } from '@/lib/base-path';
 
 const RECEIPT_KEY = 'payment_receipt';
+
+interface ConfirmMeta {
+  paid: boolean;
+  plan_id: string | null;
+  activity: string | null;
+  city: string | null;
+  comfort_level: number | null;
+}
 
 // ---------------------------------------------------------------------------
 // SMS opt-in — schedules a reminder + "did you go?" follow-up.
@@ -101,48 +107,78 @@ function SmsOptIn({ activity, city }: { activity: string; city: string }) {
 export default function ConfirmPage() {
   const searchParams = useSearchParams();
   const [plan, setPlan] = useState<Plan | null>(null);
-  const [notFound, setNotFound] = useState(false);
+  const [meta, setMeta] = useState<ConfirmMeta | null>(null);
+  const [status, setStatus] = useState<'loading' | 'paid_no_plan' | 'not_paid' | 'no_session'>(
+    'loading',
+  );
 
   const sessionId = searchParams.get('session_id');
 
   useEffect(() => {
-    // Must have a session_id — otherwise this is a direct navigation, not a paid redirect
     if (!sessionId) {
-      setNotFound(true);
+      setStatus('no_session');
       return;
     }
 
-    // Mark as paid in localStorage — unlocks PayGate on /result if user navigates back
-    localStorage.setItem(RECEIPT_KEY, new Date().toISOString());
-    analytics.paymentComplete();
+    // Validate payment server-side — prevents fake session_id params bypassing the gate
+    fetch(`${BASE_PATH}/api/confirm?session_id=${encodeURIComponent(sessionId)}`)
+      .then((r) => r.json())
+      .then((data: ConfirmMeta) => {
+        if (!data.paid) {
+          setStatus('not_paid');
+          return;
+        }
 
-    // Read plan from sessionStorage (written by PlanForm before redirect)
-    const planId = sessionStorage.getItem('current_plan_id');
-    if (!planId) {
-      // Session was cleared (new tab, etc.) — still show success, just without plan data
-      setNotFound(true);
-      return;
-    }
+        // Mark as paid in localStorage — unlocks PayGate on /result if user navigates back
+        localStorage.setItem(RECEIPT_KEY, new Date().toISOString());
+        analytics.paymentComplete();
+        setMeta(data);
 
-    const stored = sessionStorage.getItem(`plan_${planId}`);
-    if (!stored) {
-      setNotFound(true);
-      return;
-    }
+        // Load plan from sessionStorage using plan_id from Stripe session metadata
+        const planId = data.plan_id ?? sessionStorage.getItem('current_plan_id');
+        if (!planId) {
+          setStatus('paid_no_plan');
+          return;
+        }
 
-    try {
-      setPlan(JSON.parse(stored) as Plan);
-    } catch {
-      setNotFound(true);
-    }
+        const stored = sessionStorage.getItem(`plan_${planId}`);
+        if (!stored) {
+          setStatus('paid_no_plan');
+          return;
+        }
+
+        try {
+          setPlan(JSON.parse(stored) as Plan);
+        } catch {
+          setStatus('paid_no_plan');
+        }
+      })
+      .catch(() => setStatus('not_paid'));
   }, [sessionId]);
 
-  if (notFound) {
+  if (status === 'no_session' || status === 'not_paid') {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
+        <p className="font-heading text-xl font-bold">No payment found.</p>
+        <p className="text-muted mt-3 text-sm">
+          This link isn&apos;t valid or the payment wasn&apos;t completed.
+        </p>
+        <Link href="/" className="text-accent mt-5 font-mono text-sm underline underline-offset-4">
+          Start over →
+        </Link>
+      </main>
+    );
+  }
+
+  if (status === 'paid_no_plan') {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
         <p className="font-heading text-xl font-bold">Payment received.</p>
         <p className="text-muted mt-3 text-sm">
           Your plan wasn&apos;t found in this session — it may have been cleared.
+          {meta?.activity && meta?.city && (
+            <> You paid for a {meta.activity} plan in {meta.city}.</>
+          )}
         </p>
         <Link href="/" className="text-accent mt-5 font-mono text-sm underline underline-offset-4">
           Generate a new plan →
@@ -151,7 +187,7 @@ export default function ConfirmPage() {
     );
   }
 
-  if (!plan) {
+  if (status === 'loading' || !plan) {
     return (
       <main className="min-h-screen px-6 py-16">
         <div className="mx-auto max-w-xl">
