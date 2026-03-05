@@ -4,7 +4,7 @@
 // Event card + briefing are free. Comfort stat + script are behind the $9 PayGate.
 // Plan is stored in sessionStorage by PlanForm after the generate API call.
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PayGate from '@/components/pay-gate';
@@ -126,7 +126,7 @@ function PaidContent({ plan }: { plan: Plan }) {
 // ---------------------------------------------------------------------------
 // Result page
 // ---------------------------------------------------------------------------
-export default function ResultPage() {
+function ResultContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [plan, setPlan] = useState<Plan | null>(null);
@@ -283,5 +283,13 @@ export default function ResultPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function ResultPage() {
+  return (
+    <Suspense>
+      <ResultContent />
+    </Suspense>
   );
 }

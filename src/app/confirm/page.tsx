@@ -6,7 +6,7 @@
 // Sets payment_receipt in localStorage so /result's PayGate shows paid state.
 // Shows: comfort stat + full script + SMS opt-in.
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import type { Plan } from '@/lib/types';
@@ -114,7 +114,7 @@ function SmsOptIn({
 // ---------------------------------------------------------------------------
 // Confirm page
 // ---------------------------------------------------------------------------
-export default function ConfirmPage() {
+function ConfirmContent() {
   const searchParams = useSearchParams();
   const [plan, setPlan] = useState<Plan | null>(null);
   const [meta, setMeta] = useState<ConfirmMeta | null>(null);
@@ -285,5 +285,13 @@ export default function ConfirmPage() {
         </Link>
       </div>
     </main>
+  );
+}
+
+export default function ConfirmPage() {
+  return (
+    <Suspense>
+      <ConfirmContent />
+    </Suspense>
   );
 }
