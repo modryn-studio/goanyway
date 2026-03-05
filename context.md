@@ -13,9 +13,11 @@ Input your activity, city, and comfort level — get one real event, a full "wha
 
 **Type 2 — Managed isolation user (larger segment, higher conversion):** Has some social life, not in crisis, but slowly stopped trying. Doesn't identify as lonely. Will never type "how do I make friends" into Google. Searches for specific activities: "hiking clubs Denver for adults", "book clubs Austin". The pSEO play hits this user at intent. The copy must not name their loneliness — it should be activity-first, outcome-focused. They convert because the product is practical, not because it named their pain.
 
-## URL
+## Deployment
 
-https://modrynstudio.com/tools/goanyway
+mode: modryn-app
+url:  https://modrynstudio.com/tools/goanyway
+basePath: /tools/goanyway
 
 ## Stack Additions
 

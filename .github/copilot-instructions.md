@@ -8,6 +8,16 @@ Two user types: (1) **Aware** — RSVPd three times and bailed three times, acti
 
 The problem is **intent-to-action failure**, not awareness failure. People know what they want. They RSVP and bail. The $9 payment and the comfort stat are the real behavioral levers — not the script. The script is downstream of the fear being resolved.
 
+## Deployment
+
+mode: modryn-app
+url:  https://modrynstudio.com/tools/goanyway
+basePath: /tools/goanyway
+
+Served via rewrites in modryn-studio-v2 — `basePath` must stay set in `next.config.ts`.
+`BASE_PATH = '/tools/goanyway'` in `src/lib/base-path.ts` — all `fetch()` calls to API routes use it.
+Telnyx webhook URL: `https://modrynstudio.com/tools/goanyway/api/sms/webhook`
+
 ## Stack
 
 - Next.js 16 (App Router) with TypeScript
