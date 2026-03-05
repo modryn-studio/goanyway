@@ -5,7 +5,7 @@ import { getPseoCombos } from '@/../content/pseo/combos';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pseoRoutes: MetadataRoute.Sitemap = getPseoCombos().map(({ activitySlug, citySlug }) => ({
-    url: `${site.url}/tools/goanyway/${activitySlug}/${citySlug}`,
+    url: `${site.url}/${activitySlug}/${citySlug}`,
     lastModified: new Date('2026-03-04'),
     changeFrequency: 'weekly',
     priority: 0.7,
