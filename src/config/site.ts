@@ -1,4 +1,4 @@
-// Single source of truth for all site-wide metadata.
+﻿// Single source of truth for all site-wide metadata.
 // /project-init fills this in from context.md + brand.md.
 // Every other file imports from here — never hardcode site metadata elsewhere.
 export const site = {
@@ -9,7 +9,7 @@ export const site = {
   description:
     'Stop bailing on your first social event. Enter your activity and city — get a real event, a what-to-expect briefing, and a first-hour script.',
   // Longer form for social cards
-  ogTitle: 'GoAnyway | Your First Social Event, Scripted',
+  ogTitle: 'GoAnyway | Stop Bailing on Your First Social Event',
   ogDescription:
     'Pick your activity and city. Get one real event, a what-to-expect briefing, and a word-for-word script for your first hour. $9 to stop bailing.',
   founder: 'Luke Hanner',
