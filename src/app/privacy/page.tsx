@@ -30,10 +30,10 @@ export default function PrivacyPage() {
         <section className="space-y-4 text-base">
           <h2 className="font-heading text-lg font-bold">What we collect</h2>
           <p>
-            When you use GoAnyway, we collect the information you provide: your activity type,
-            city, and comfort level (to generate your plan), your email address (if you choose to
-            save your plan), your phone number (if you opt in to SMS reminders), and payment
-            information processed by Stripe.
+            When you use GoAnyway, we collect the information you provide: your activity type, city,
+            and comfort level (to generate your plan), your email address (if you choose to save
+            your plan), your phone number (if you opt in to SMS reminders), and payment information
+            processed by Stripe.
           </p>
           <p>
             We do not store your card number. Stripe handles payment processing and they have their
@@ -44,14 +44,12 @@ export default function PrivacyPage() {
         <section className="space-y-4 text-base">
           <h2 className="font-heading text-lg font-bold">How we use it</h2>
           <p>
-            Your activity, city, and comfort level are sent to OpenAI and Anthropic to generate
-            your event plan and script. These inputs are not linked to your identity in those
-            systems.
+            Your activity, city, and comfort level are sent to OpenAI and Anthropic to generate your
+            event plan and script. These inputs are not linked to your identity in those systems.
           </p>
           <p>
-            Your email is added to our list via Resend and used to deliver your plan and
-            occasional follow-up messages. You can opt out at any time using the unsubscribe link
-            in any email.
+            Your email is added to our list via Resend and used to deliver your plan and occasional
+            follow-up messages. You can opt out at any time using the unsubscribe link in any email.
           </p>
           <p>
             Your phone number is registered with Telnyx to send one reminder before the event and

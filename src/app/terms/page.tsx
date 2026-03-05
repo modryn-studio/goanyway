@@ -40,8 +40,7 @@ export default function TermsPage() {
           <h2 className="font-heading text-lg font-bold">Payment</h2>
           <p>
             The comfort stat and script are unlocked with a one-time $9 payment via Stripe. All
-            sales are final. We do not offer refunds. If you have a problem with your plan,
-            email{' '}
+            sales are final. We do not offer refunds. If you have a problem with your plan, email{' '}
             <a
               href="mailto:luke@modrynstudio.com"
               className="text-accent underline underline-offset-4"
@@ -77,8 +76,8 @@ export default function TermsPage() {
         <section className="space-y-4 text-base">
           <h2 className="font-heading text-lg font-bold">SMS</h2>
           <p>
-            Opting in to SMS sends two messages: one reminder before the event, one follow-up
-            after. Message and data rates may apply. Reply STOP at any time to opt out.
+            Opting in to SMS sends two messages: one reminder before the event, one follow-up after.
+            Message and data rates may apply. Reply STOP at any time to opt out.
           </p>
         </section>
 
