@@ -32,7 +32,7 @@ Open chat: `Ctrl+Alt+I`
 
 ## Custom Agent
 
-**`@check`** — Pre-ship quality gate. Checks for bugs → scans → fixes → lints → builds → commits. Never pushes.
+**`@check`** — Pre-ship quality gate. Checks for bugs → scans for secrets → scans → fixes → lints → builds → commits. Never pushes.
 
 Usage: switch to Agent mode, then type:
 
