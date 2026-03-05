@@ -170,7 +170,10 @@ If you want isolated search performance data per tool (mirrors GA4 per-tool prop
 4. Done (also covers Yahoo and DuckDuckGo which use Bing's index)
 
 ## Step 3: Validation
-Tell me to check these once the site is deployed:
-- **OG preview:** https://opengraph.xyz — paste the live URL, verify title 50–60 chars, description 110–160 chars, image 1200×630
-- **JSON-LD:** https://search.google.com/test/rich-results — should show "1 valid item detected"
-- **DNS propagation:** https://www.whatsmydns.net — check TXT record has propagated
+Tell me to check these once the site is deployed.
+
+> **Use the direct Vercel URL for all validation tools** (e.g. https://yourapp.vercel.app/tools/yourtool), not the canonical modrynstudio.com URL. The root path /tools/yourtool on modrynstudio.com is served by modryn-studio-v2’s static page -- your Next.js app only serves sub-paths via rewrite. The Vercel URL always serves your actual app.
+
+- **OG preview:** https://opengraph.xyz -- paste **direct Vercel URL**, verify title 50–60 chars, description 110–160 chars, image 1200×630
+- **JSON-LD:** https://search.google.com/test/rich-results -- paste **direct Vercel URL**, should show “1 valid item detected”
+- **DNS propagation:** https://www.whatsmydns.net -- check TXT record has propagated
