@@ -40,6 +40,30 @@ Read through all recently changed files and any files they depend on. Look for p
 
 Fix what you can safely fix. For complex logic bugs, leave a `TODO: CHECK — potential bug:` comment with a clear explanation.
 
+### Phase 0.5: Secrets Scan
+Run these terminal commands before anything else. A secrets leak is a hard FAIL — do not proceed to later phases until it's resolved.
+
+**1. Grep tracked files for secret patterns:**
+```
+git grep -rn -E "(sk-[A-Za-z0-9]{20,}|sk_live_[A-Za-z0-9]+|sk_test_[A-Za-z0-9]+|AIza[A-Za-z0-9_-]{35}|xoxb-[A-Za-z0-9-]+|ghp_[A-Za-z0-9]{36}|glpat-[A-Za-z0-9_-]+|telnyx_[A-Za-z0-9_]+|resend_[A-Za-z0-9_]+|Bearer [A-Za-z0-9._-]{20,})" -- ":(exclude).env*" ":(exclude)*.lock" ":(exclude)node_modules"
+```
+If any matches are found — FAIL. Report file and line. Do not auto-fix; flag for manual review.
+
+**2. Verify all `.env*` files are gitignored:**
+```
+git check-ignore -v .env .env.local .env.production .env.development .env.staging
+```
+Every `.env*` file that exists locally should appear in the output. Any that are NOT gitignored — FAIL immediately.
+
+**3. Check git history for `.env` files ever committed:**
+```
+git log --oneline --all -- .env .env.local .env.production .env.development
+```
+If any commits appear — WARN. Those keys exist in git history even if the files are now removed. Flag for manual attention: developer should consider rotating any keys that were exposed.
+
+**4. Check `next.config.ts` for hardcoded secrets:**
+Read `next.config.ts`. Flag any string value that looks like an API key, token, or secret (not a URL, not a path, not a version string). If found — FAIL.
+
 ### Phase 1: Scan
 Read through the codebase and check for ALL of the following:
 
@@ -123,6 +147,7 @@ Output a structured summary in this exact format:
 
 ### Scan Results
 - Bugs:               PASS / WARN / FAIL (details)
+- Secrets:            PASS / FAIL (details)
 - Security:           PASS / FAIL (details)
 - Code Quality:       PASS / WARN (details)
 - Next.js Conventions: PASS / FAIL (details)
