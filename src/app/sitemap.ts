@@ -26,16 +26,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${site.url}/privacy`,
-      lastModified: new Date('2026-03-04'),
+      lastModified: new Date('2026-03-05'),
       changeFrequency: 'yearly',
       priority: 0.2,
     },
     {
       url: `${site.url}/terms`,
-      lastModified: new Date('2026-03-04'),
+      lastModified: new Date('2026-03-05'),
       changeFrequency: 'yearly',
       priority: 0.2,
     },
     ...pseoRoutes,
   ];
 }
+
