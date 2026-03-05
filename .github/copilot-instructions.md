@@ -18,18 +18,7 @@ Served via rewrites in modryn-studio-v2 — `basePath` must stay set in `next.co
 `BASE_PATH = '/tools/goanyway'` in `src/lib/base-path.ts` — all `fetch()` calls to API routes use it.
 Telnyx webhook URL: `https://modrynstudio.com/tools/goanyway/api/sms/webhook`
 
-<!-- modryn-app rewrite architecture:
-     This tool is served at modrynstudio.com/tools/goanyway via a Next.js rewrite in modryn-studio-v2/next.config.ts.
-     - The rewrite is managed by running /deploy inside modryn-studio-v2 — NEVER add or edit it from this repo.
-     - The /tools/goanyway landing page is rendered by modryn-studio-v2, not this repo.
-     - basePath in next.config.ts must match the rewrite source path exactly: /tools/goanyway
-     - BASE_PATH in src/lib/base-path.ts must match basePath — all fetch() calls to API routes use it.
-     - The "url" in content/tools/goanyway.json (the "Try it" button) points to https://goanyway.vercel.app/tools/goanyway
-       (direct Vercel URL) so that traffic hits GoAnyway's own GA4 property (G-XWQQDJYTLH).
-       Using modrynstudio.com/tools/goanyway would send that traffic to modrynstudio's GA4 instead.
-     - The root path /tools/goanyway is served by modryn-studio-v2's own static page.
-       Rewrites only match sub-paths (:path*). This is by design — the landing page belongs to v2. -->
-
+The rewrite in modryn-studio-v2 is managed by running `/deploy` in that repo — never add or edit it from this repo. The root path `/tools/goanyway` is served by modryn-studio-v2's own static page; rewrites only match sub-paths. The "Try it" URL in `content/tools/goanyway.json` points to `https://goanyway.vercel.app/tools/goanyway` (direct Vercel URL) so GA4 events hit GoAnyway's own property, not modrynstudio's.
 
 ## Stack
 
