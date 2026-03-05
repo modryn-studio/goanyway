@@ -11,7 +11,7 @@ The problem is **intent-to-action failure**, not awareness failure. People know 
 ## Deployment
 
 mode: modryn-app
-url:  https://modrynstudio.com/tools/goanyway
+url: https://modrynstudio.com/tools/goanyway
 basePath: /tools/goanyway
 
 Served via rewrites in modryn-studio-v2 — `basePath` must stay set in `next.config.ts`.
@@ -27,9 +27,8 @@ Telnyx webhook URL: `https://modrynstudio.com/tools/goanyway/api/sms/webhook`
 - Vercel Analytics `<Analytics />` component in `layout.tsx` for pageviews only — do not use their `track()` API
 - Resend — email list capture, studio-wide broadcast, future nurture. Double opt-in is OFF — treat the capture as a plan-save request, not a newsletter signup. "Email me my plan" converts better than "Sign up for updates." Capture happens at the PayGate wall before payment — not on `/confirm`.
 - Stripe Checkout Session — $9 one-time PayGate via `/api/checkout`. Session metadata carries `activity`, `city`, `comfort_level` through the redirect to `/confirm`. The $9 is also a commitment device — a person who paid is materially more likely to attend. (not yet installed)
-- OpenAI GPT-5 mini (`gpt-5-mini`) — generates structured JSON: event card, briefing, script shell, starters. ~$0.003/call (not yet installed)
-- Anthropic Claude Sonnet 4.6 (`claude-sonnet-4-6`) — used specifically for the 2-3 emotionally loaded lines: comfort stat framing + script reassurance. Not a fallback — a deliberate second pass where tone is the differentiator. ~$0.015/call. Do not use Haiku — saves $0.01, produces noticeably flatter copy. (not yet installed)
-- Perplexity Search API — returns ranked live web results for events. Not the sonar chat model. Query format: `"[activity] events [city] [month year] site:eventbrite.com OR site:meetup.com OR site:lu.ma"` (not yet installed)
+- OpenAI GPT-5 mini (`gpt-5-mini`) — generates structured JSON: event card, briefing, script shell, starters. ~$0.003/call. Uses `max_completion_tokens` (not `max_tokens`) and no `temperature` — it's a reasoning model. `response_format: json_object` supported.
+- Anthropic Claude Sonnet 4.6 (`claude-sonnet-4-6`) — two roles: (1) event search via built-in `web_search_20250305` tool with `allowed_domains` locked to `meetup.com`, `eventbrite.com`, `lu.ma` and `user_location` set to the submitted city (~$0.01/search); (2) emotional copy rewrite — comfort stat framing + script reassurance (~$0.015/call). Not a fallback — deliberate passes where tone is the differentiator. Do not use Haiku — saves $0.01, produces noticeably flatter copy.
 - Telnyx — SMS reminders + "Did you go?" follow-up (not yet installed)
 
 ## Project Structure
@@ -39,7 +38,7 @@ Telnyx webhook URL: `https://modrynstudio.com/tools/goanyway/api/sms/webhook`
 /components             → Reusable UI components
 /lib                    → Utilities, helpers, data fetching
 /lib/prompts            → Prompt templates for briefing generation (briefing.ts, script.ts)
-/lib/perplexity.ts      → Perplexity event lookup wrapper + fallback logic
+/lib/event-search.ts    → Claude Sonnet 4.6 web search wrapper + fallback logic
 /content/tools          → Tool metadata JSON for modryn-studio-v2
 /content/pseo           → pSEO activity + city combinations
 /app/tools/goanyway     → pSEO dynamic route pages
@@ -53,7 +52,7 @@ Telnyx webhook URL: `https://modrynstudio.com/tools/goanyway/api/sms/webhook`
 - `/privacy` → Privacy policy
 - `/terms` → Terms of service
 - `/tools/goanyway/[activity]/[city]` → pSEO page per activity + city combination
-- `/api/generate` → POST: (1) Perplexity Search API finds event, (2) GPT-5 mini generates structured JSON, (3) Claude Sonnet 4.6 rewrites comfort stat + script reassurance lines. Comfort level 1-2 = lowest-friction format (drop-in, no talking required), 3 = balanced, 4-5 = direct script only
+- `/api/generate` → POST: (1) Claude Sonnet 4.6 web search tool (`web_search_20250305`, domain-filtered to meetup/eventbrite/lu.ma) finds event, (2) GPT-5 mini generates structured JSON, (3) Claude Sonnet 4.6 rewrites comfort stat + script reassurance lines. Comfort level 1-2 = lowest-friction format (drop-in, no talking required), 3 = balanced, 4-5 = direct script only
 - `/api/email` → POST: Resend — adds email to list, triggers "Did you go?" follow-up sequence
 - `/api/checkout` → POST: Stripe Checkout Session with `activity`, `city`, `comfort_level` in metadata. Success URL: `/confirm?session_id={CHECKOUT_SESSION_ID}`
 - `/api/feedback` → POST: feedback + newsletter signup handler

@@ -3,9 +3,8 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   // reactCompiler requires babel-plugin-react-compiler — enable when installed
   // reactCompiler: true,
-  // basePath is filled in by /init from the URL field in context.md.
-  // Format: '/tools/your-slug'
-  // Must match the source path in modryn-studio-v2's next.config.ts rewrites().
+  // Served under modrynstudio.com/tools/goanyway via rewrites in modryn-studio-v2.
+  // The v2 rewrite destination must include this prefix for Next.js routing to resolve correctly.
   basePath: '/tools/goanyway',
 };
 

@@ -71,7 +71,7 @@ export async function POST(req: Request): Promise<Response> {
         ``,
         `You picked ${activityLabel}${cityLabel}. Good choice.`,
         ``,
-        `Your full plan — including the comfort stat and first-hour script — is waiting at:`,
+        `When you're ready to go, your plan is one click away:`,
         `https://modrynstudio.com/tools/goanyway`,
         ``,
         `In a few days I'll email to ask: did you go?`,

@@ -39,13 +39,13 @@ export default function EmailSignup() {
   };
 
   return (
-    <section id="signup" className="border-t border-[var(--color-border)]">
+    <section id="signup" className="border-border border-t">
       <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
         <div className="mx-auto max-w-lg text-center">
           <h2 className="font-heading text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
             Don&apos;t miss the drop.
           </h2>
-          <p className="mt-4 font-mono text-sm text-[var(--color-muted)] md:text-base">
+          <p className="text-muted mt-4 font-mono text-sm md:text-base">
             Get notified when this goes live. No newsletters. Just launches.
           </p>
 
@@ -62,18 +62,18 @@ export default function EmailSignup() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={submitting}
-                className="h-12 flex-1 rounded-none border-2 border-[var(--color-border)] bg-transparent px-4 font-mono text-sm placeholder:text-[var(--color-muted)] focus-visible:ring-1 focus-visible:ring-[var(--color-accent)] focus-visible:outline-none"
+                className="border-border placeholder:text-muted focus-visible:ring-accent h-12 flex-1 rounded-none border-2 bg-transparent px-4 font-mono text-sm focus-visible:ring-1 focus-visible:outline-none"
               />
               <button
                 type="submit"
                 disabled={submitting}
-                className="h-12 rounded-none bg-[var(--color-accent)] px-8 font-mono text-sm font-bold text-white hover:opacity-90 disabled:opacity-50"
+                className="bg-accent h-12 rounded-none px-8 font-mono text-sm font-bold text-white hover:opacity-90 disabled:opacity-50"
               >
                 {submitting ? 'Sending...' : 'Notify me'}
               </button>
             </form>
           ) : (
-            <div className="mt-8 border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/5 p-4 font-mono text-sm text-[var(--color-accent)]">
+            <div className="border-accent/30 bg-accent/5 text-accent mt-8 border p-4 font-mono text-sm">
               You&apos;re on the list. Next launch, your inbox.
             </div>
           )}

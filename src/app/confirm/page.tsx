@@ -200,7 +200,7 @@ export default function ConfirmPage() {
     );
   }
 
-  if (status === 'loading' || !plan) {
+  if (!plan) {
     return (
       <main className="min-h-screen px-6 py-16">
         <div className="mx-auto max-w-xl">

@@ -1,11 +1,11 @@
 // POST /api/generate
-// Pipeline: Perplexity (event lookup) → GPT-5 mini (structured plan) → Claude Sonnet 4.6 (emotional lines)
+// Pipeline: Claude Sonnet 4.6 web search (event lookup) → GPT-5 mini (structured plan) → Claude Sonnet 4.6 (emotional lines)
 //
 // Returns: { id: string, plan: Plan }
 // The id is stored client-side in sessionStorage; the result page reads it back.
 
 import { createRouteLogger } from '@/lib/route-logger';
-import { searchEvent } from '@/lib/perplexity';
+import { searchEvent } from '@/lib/event-search';
 import { buildBriefingPrompt } from '@/lib/prompts/briefing';
 import { buildClaudeRewritePrompt } from '@/lib/prompts/claude-rewrite';
 import type { GenerateRequest, GenerateResponse, Plan, PlanEvent } from '@/lib/types';
@@ -35,8 +35,9 @@ async function callGPT(
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt },
     ],
-    temperature: 0.7,
-    max_tokens: 1200,
+    // gpt-5-mini is a reasoning model — internal reasoning tokens count against this budget.
+    // 1200 was too low; the model ran out before finishing the JSON output.
+    max_completion_tokens: 6000,
     response_format: { type: 'json_object' },
   });
 
@@ -147,15 +148,19 @@ export async function POST(req: Request): Promise<Response> {
 
     log.info(ctx.reqId, 'Generating plan', { activity, city, comfort_level });
 
-    // Step 1: Perplexity — find a real event
+    // Step 1: Claude Sonnet 4.6 web search — find a real event
     let event: PlanEvent | null = null;
     try {
       event = await searchEvent(activity.trim(), city.trim());
-      log.info(ctx.reqId, event ? 'Event found via Perplexity' : 'No Perplexity event — fallback', {
-        source: event?.source ?? 'none',
-      });
+      log.info(
+        ctx.reqId,
+        event ? 'Event found via Claude web search' : 'No event found — using fallback',
+        {
+          source: event?.source ?? 'none',
+        }
+      );
     } catch (err) {
-      log.warn(ctx.reqId, 'Perplexity error — continuing with fallback', { err: String(err) });
+      log.warn(ctx.reqId, 'Event search error — continuing with fallback', { err: String(err) });
     }
 
     // Step 2: GPT-5 mini — structured plan
@@ -170,9 +175,9 @@ export async function POST(req: Request): Promise<Response> {
     // Use fallback when GPT not available
     const basePlan = gptPlan ?? buildFallbackPlan(activity.trim(), city.trim(), comfort_level);
 
-    // Merge Perplexity event into GPT plan when GPT didn't use it
+    // Merge Claude-found event into GPT plan when GPT didn't use it
     // (GPT prompt includes event context, so this is mostly a safeguard)
-    if (event && basePlan.event?.source !== 'perplexity') {
+    if (event && basePlan.event?.source !== 'claude') {
       basePlan.event = event;
     }
 

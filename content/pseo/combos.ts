@@ -36,12 +36,12 @@ const CITIES = [
 ] as const;
 
 export function getPseoCombos(): PseoCombo[] {
-  return ACTIVITIES.flatMap(activity =>
-    CITIES.map(city => ({
+  return ACTIVITIES.flatMap((activity) =>
+    CITIES.map((city) => ({
       activitySlug: activity.slug,
       citySlug: city.slug,
       activityLabel: activity.label,
       cityLabel: city.label,
-    })),
+    }))
   );
 }

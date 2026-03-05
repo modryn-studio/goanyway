@@ -8,7 +8,7 @@ export interface PlanEvent {
   address: string;
   url: string;
   description: string;
-  source: 'perplexity' | 'fallback';
+  source: 'claude' | 'fallback';
 }
 
 export interface ComfortStat {

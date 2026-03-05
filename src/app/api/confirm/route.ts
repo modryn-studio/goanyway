@@ -22,19 +22,13 @@ export async function GET(req: Request): Promise<Response> {
     const sessionId = searchParams.get('session_id');
 
     if (!sessionId) {
-      return log.end(
-        ctx,
-        Response.json({ error: 'session_id required' }, { status: 400 }),
-      );
+      return log.end(ctx, Response.json({ error: 'session_id required' }, { status: 400 }));
     }
 
     const secretKey = process.env.STRIPE_SECRET_KEY;
     if (!secretKey) {
       log.warn(ctx.reqId, 'Stripe not configured');
-      return log.end(
-        ctx,
-        Response.json({ error: 'Payment service unavailable' }, { status: 503 }),
-      );
+      return log.end(ctx, Response.json({ error: 'Payment service unavailable' }, { status: 503 }));
     }
 
     const stripe = new Stripe(secretKey);

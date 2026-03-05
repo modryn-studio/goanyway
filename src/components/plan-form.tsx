@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, type FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { analytics } from '@/lib/analytics';
 import { BASE_PATH } from '@/lib/base-path';
 
@@ -18,8 +18,9 @@ const COMFORT_LEVELS = [
 
 export default function PlanForm() {
   const router = useRouter();
-  const [activity, setActivity] = useState('');
-  const [city, setCity] = useState('');
+  const searchParams = useSearchParams();
+  const [activity, setActivity] = useState(searchParams.get('activity') ?? '');
+  const [city, setCity] = useState(searchParams.get('city') ?? '');
   const [comfort, setComfort] = useState<number | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');

@@ -16,7 +16,7 @@ Input your activity, city, and comfort level — get one real event, a full "wha
 ## Deployment
 
 mode: modryn-app
-url:  https://modrynstudio.com/tools/goanyway
+url: https://modrynstudio.com/tools/goanyway
 basePath: /tools/goanyway
 
 ## Stack Additions
@@ -25,15 +25,14 @@ basePath: /tools/goanyway
 - **Telnyx** — SMS loop: (1) T-1hr event reminder, (2) T+3hr "Did you go?" follow-up (the product's core data point), (3) if reply is "no" → "No worries. Same time next week?" + new event suggestion. That third message turns a bail into a re-engagement. Opt-in framed as a feature: "Text me a reminder before my event." Never promotional.
 - **Telnyx Webhooks** — inbound SMS handler for "Did you go?" reply logging
 - **Stripe Checkout Session** — $9 one-time charge for full script. Use `/api/checkout` to create a session with `activity`, `city`, `comfort_level` in metadata. Session metadata survives the redirect to `/confirm` and is available in the webhook for the "Did you go?" trigger. The $9 is also a commitment device — a person who paid is materially more likely to attend than a person who didn't.
-- **OpenAI GPT-5 mini** — primary model for briefing + script generation (fast, cheap, structured output)
-- **Anthropic Claude Sonnet 4.6** (`claude-sonnet-4-6`) — used specifically for the 2-3 emotionally loaded lines per plan: the comfort stat framing and the first-hour script reassurance. Not a fallback — a deliberate second pass where tone is the differentiator. Do not swap for Haiku (4.5) to save $0.01 — it produces noticeably flatter copy and the voice is the product's only real differentiator.
-- **Perplexity Search API** — Returns ranked live web results for events. Use the Search API (not the sonar chat model) — it gives clean URLs and source metadata directly, no inference layer, no hallucination risk. Query format: `"[activity] events [city] [month year] site:eventbrite.com OR site:meetup.com OR site:lu.ma"`. No API approval required.
+- **OpenAI GPT-5 mini** — primary model for briefing + script generation (fast, cheap, structured output). ~$0.003/call. Uses `response_format: json_object` + `max_completion_tokens` (reasoning model — needs at least 6000). Do not use `temperature` — not supported.
+- **Anthropic Claude Sonnet 4.6** (`claude-sonnet-4-6`) — two roles: (1) event search via built-in `web_search_20250305` tool with `allowed_domains` locked to `meetup.com`, `eventbrite.com`, `lu.ma` and `user_location` set to the submitted city (~$0.01/search); (2) emotional copy rewrite for the 2 emotionally loaded lines per plan (comfort stat framing + first-hour script reassurance). Not a fallback — a deliberate second pass where tone is the differentiator. Do not swap for Haiku (4.5) to save $0.01 — it produces noticeably flatter copy.
 
 ## Project Structure Additions
 
 - `/content/tools/goanyway.json` — tool metadata for modryn-studio-v2 landing page
 - `/lib/prompts/` — prompt templates for briefing generation (briefing.ts, script.ts)
-- `/lib/perplexity.ts` — Perplexity event lookup wrapper + fallback logic (no-results fallback: Google search link)
+- `/lib/event-search.ts` — Claude Sonnet 4.6 web search wrapper + fallback logic (no-results fallback: Google search link)
 - `/app/tools/goanyway/[activity]/[city]/page.tsx` — pSEO dynamic route template
 - `/content/pseo/combinations.json` — master list of activity + city combinations to generate (populate month 2-3)
 - `/app/api/sms/webhook/route.ts` — Telnyx inbound SMS webhook handler
@@ -43,7 +42,7 @@ basePath: /tools/goanyway
 - `/` → Hero + input form (activity type, city, comfort level 1–5). Submits to generate flow.
 - `/result` → AI-generated output: one event card, "what to expect" briefing (free), + PayGate wall. **Email capture lives here, before payment** — "Email me my plan" framing, posts to `/api/email`. This is the highest-capture point: user is engaged, hasn't committed yet. Full first-hour script and comfort stats behind the gate.
 - `/confirm` → Post-payment: full script unlocked. **SMS opt-in only** — email was captured at the PayGate wall. "Text me a reminder before my event." → posts to `/api/sms`. Reads plan data from Stripe session metadata (via `?session_id=` param) — not sessionStorage, which is unreliable across redirects.
-- `/api/generate` → POST: takes form inputs → (1) Perplexity Search API finds one real event, (2) GPT-5 mini (`gpt-5-mini`) generates structured JSON: briefing, script shell, starters list, comfort stat placeholder, (3) Claude Sonnet 4.6 (`claude-sonnet-4-6`) rewrites the 2-3 emotionally loaded lines (comfort stat framing, first-hour script reassurance). Comfort level drives output structure: 1-2 = suggest lowest-friction format (drop-in class, no talking required), 3 = balanced, 4-5 = direct script, get out of the way.
+- `/api/generate` → POST: takes form inputs → (1) Claude Sonnet 4.6 web search tool (`web_search_20250305`, domain-filtered to meetup/eventbrite/lu.ma) finds one real event, (2) GPT-5 mini (`gpt-5-mini`) generates structured JSON: briefing, script shell, starters list, comfort stat placeholder, (3) Claude Sonnet 4.6 rewrites the 2 emotionally loaded lines (comfort stat framing, first-hour script reassurance). Comfort level drives output structure: 1-2 = suggest lowest-friction format (drop-in class, no talking required), 3 = balanced, 4-5 = direct script, get out of the way.
 - `/api/email` → POST: Resend — adds email to list, triggers T+3 follow-up sequence ("Did you go?")
 - `/tools/goanyway/[activity]/[city]` → pSEO page. Same Perplexity data call as the main tool. Use ISR (`revalidate: 86400`) — call Perplexity at request time, not build time. This means any activity/city combination works immediately, no build step. Add `generateStaticParams` only for top 20 combinations once there's traffic data. Template built at launch, pages indexed month 2-3.
 - `/api/sms` → POST: Telnyx — registers phone number, schedules event reminder (T-1hr) + "Did you go?" follow-up (T+3hrs post-event)

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import PlanForm from '@/components/plan-form';
 
 export default function Home() {
@@ -15,7 +16,9 @@ export default function Home() {
           script for your first hour.
         </p>
 
-        <PlanForm />
+        <Suspense>
+          <PlanForm />
+        </Suspense>
       </section>
 
       {/* Footer */}
