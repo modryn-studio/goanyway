@@ -1,4 +1,5 @@
-﻿import { site } from '@/config/site';
+﻿import Link from 'next/link';
+import { site } from '@/config/site';
 
 export function Footer() {
   return (
@@ -32,12 +33,12 @@ export function Footer() {
           >
             GitHub
           </a>
-          <a href="/tools/goanyway/privacy" className="hover:text-white/70 transition-colors">
+          <Link href="/privacy" className="hover:text-white/70 transition-colors">
             Privacy
-          </a>
-          <a href="/tools/goanyway/terms" className="hover:text-white/70 transition-colors">
+          </Link>
+          <Link href="/terms" className="hover:text-white/70 transition-colors">
             Terms
-          </a>
+          </Link>
         </div>
       </div>
     </footer>
