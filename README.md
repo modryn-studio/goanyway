@@ -4,7 +4,7 @@
 
 You already RSVP'd. Get a plan for when you walk in.
 
-→ [modrynstudio.com/tools/goanyway](https://modrynstudio.com/tools/goanyway)
+→ [goanyway.vercel.app/tools/goanyway](https://goanyway.vercel.app/tools/goanyway)
 
 ---
 

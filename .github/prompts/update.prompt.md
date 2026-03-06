@@ -1,4 +1,3 @@
-```prompt
 ---
 name: update
 description: Re-reads context.md, brand.md, and development-principles.md and cascades any changes into copilot-instructions.md, site.ts, and next.config.ts
@@ -68,4 +67,3 @@ After cascading, report:
 - Anything in `context.md` or `brand.md` that is incomplete, contradictory, or missing that could cause issues later (flag but do not invent)
 
 Do not commit. Luke reviews the diff and commits manually.
-```

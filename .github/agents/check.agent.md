@@ -1,7 +1,7 @@
 ---
 name: check
 description: "Pre-ship quality gate: checks for bugs, scans for issues, auto-fixes what it can, runs lint and build, commits fixes, and reports what's left. Never pushes to remote."
-argument-hint: 'Run the pre-ship checklist'
+argument-hint: "Run the pre-ship checklist"
 tools: ['codebase', 'editFiles', 'runInTerminal', 'search', 'problems', 'changes']
 ---
 

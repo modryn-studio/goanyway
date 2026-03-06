@@ -102,7 +102,30 @@ Use when you need dynamic pricing, coupons, or programmatic control.
 Finally, wire `FeedbackWidget` into `src/app/layout.tsx`:
 - Add `import FeedbackWidget from '@/components/feedback-widget'` with the other component imports
 - Add `<FeedbackWidget />` as the last child inside `<body>`, before `</body>`
-- The widget uses CSS custom properties (`--color-border`, `--color-surface`, `--color-accent`, etc.) — verify these exist in `globals.css`. If not, add them to `:root`.
+- The widget uses CSS custom properties (`--color-border`, `--color-surface`, `--color-accent`, etc.).
+  Verify these exist in `globals.css` inside an `@theme` block — **not** `:root`.
+  If `globals.css` doesn't exist, create it with:
+  ```css
+  @import 'tailwindcss';
+
+  @theme {
+    --color-bg: #050505;
+    --color-surface: #111111;
+    --color-border: #222222;
+    --color-text: #e5e5e5;
+    --color-muted: #666666;
+    --color-accent: #F97415; /* replace with brand accent from site.ts */
+    --font-heading: var(--font-sans);
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+  ```
+  Colors must be in `@theme`, not `:root`. Only `@theme` generates Tailwind utility classes
+  (e.g. `text-accent`, `bg-surface`, `border-border`). `:root` only creates CSS variables with
+  no corresponding utilities.
 - This must be present in every project — it's how Luke collects feedback from day one
 
 After editing, confirm what was filled in and flag anything that was missing from context.md or brand.md that Luke should provide.
