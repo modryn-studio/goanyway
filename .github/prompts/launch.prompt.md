@@ -1,7 +1,7 @@
----
+﻿---
 name: launch
 description: "Distribution checklist: sharing hooks, dynamic OG images, social footer, community posting guide."
-agent: ask
+agent: agent
 ---
 # Launch Distribution
 
@@ -49,31 +49,34 @@ twitter: {
 **Dynamic OG images** — check whether `src/app/opengraph-image.tsx` exists. If not, create it using `next/og` `ImageResponse`. Also check key non-home pages (e.g. `/how-it-works`, `/about`, any tool/product page) — if they only inherit the root OG image, generate per-page `opengraph-image.tsx` files with headlines that match each page's purpose:
 ```tsx
 import { ImageResponse } from 'next/og';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { site } from '@/config/site';
 
-// IMPORTANT: Remove `export const runtime = 'edge'` if this image reads from the
-// filesystem (e.g. MDX files, JSON content directories). Edge runtime cannot use
-// Node.js APIs — use it only for purely static OG images that don't read files.
-export const runtime = 'edge';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-export default async function Image() {
+export default async function OpenGraphImage() {
+  const logoData = await readFile(join(process.cwd(), 'public/brand/logomark.png'), 'base64');
+  const logoSrc = `data:image/png;base64,${logoData}`;
+
   return new ImageResponse(
     (
-      <div style={{ background: site.bg, width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '80px', fontFamily: 'sans-serif' }}>
-        <div style={{ fontSize: 58, fontWeight: 700, color: '#ffffff', textAlign: 'center', lineHeight: 1.1, marginBottom: 24 }}>
+      <div style={{ background: site.bg, width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', padding: '80px' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={logoSrc} alt={site.name} height={52} style={{ marginBottom: 32, objectFit: 'contain' }} />
+        <h1 style={{ color: '#FAF7F2', fontSize: 64, fontWeight: 700, lineHeight: 1.1, margin: 0, marginBottom: 24 }}>
           {/* page-specific headline */}
-        </div>
-        <div style={{ fontSize: 22, color: '#a1a1aa', textAlign: 'center', maxWidth: 700 }}>
-          {/* page-specific subtext */}
-        </div>
-        <div style={{ position: 'absolute', bottom: 40, right: 60, fontSize: 18, color: site.accent, fontWeight: 600 }}>
-          {/* domain — e.g. site.url.replace('https://', '') */}
+        </h1>
+        <p style={{ color: '#9E9693', fontSize: 28, margin: 0, marginBottom: 48 }}>
+          {/* page-specific subtitle */}
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', background: site.accent, color: site.bg, fontSize: 22, fontWeight: 700, padding: '14px 28px', borderRadius: 8 }}>
+          {site.cta}
         </div>
       </div>
     ),
-    { ...size },
+    { ...size }
   );
 }
 ```
@@ -126,7 +129,7 @@ Report what was created vs already existed.
 - [ ] Footer has X/Twitter + GitHub links from `site.social`
 - [ ] Footer has Modryn Studio credit linking to modrynstudio.com
 - [ ] `src/app/opengraph-image.tsx` exists with correct title/desc
-- [ ] Key pages beyond home have per-page `opengraph-image.tsx`
+- [ ] Key pages beyond home have per-page `opengraph-image.tsx` -- if missing, auto-generate them (see Step 0 above)
 - [ ] Main flow success/done state has a share link
 - [ ] Educational/FAQ pages have FAQPage JSON-LD
 - [ ] `sitemap.ts` uses static `lastModified` dates (not `new Date()`)
@@ -159,8 +162,11 @@ Post in this order, 30–60 min apart:
 2. **pSEO seed** — If the product has comparison or "best X for Y" potential, create 1–2 programmatic pages. These take 2–4 months to rank but compound. Don't skip this step.
 3. **Hacker News** — Only if you have a genuine technical insight to share (not a product plug). "Show HN" with a paragraph about the interesting technical decision, link to the tool.
 
+> **Requires a live URL.** Run `/deploy` in modryn-studio-v2 first if you haven't already.
+
 ## Step 3: Validation
 Check these are live before posting anywhere:
 - **OG preview:** https://opengraph.xyz — paste the live URL, image loads correctly, title/desc match
 - **Share link test:** open your pre-filled X share URL in a browser — confirm it pre-fills correctly
 - **FAQPage schema:** https://search.google.com/test/rich-results — should show FAQ rich result if implemented
+
