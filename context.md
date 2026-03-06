@@ -1,4 +1,4 @@
-# Project Context
+﻿# Project Context
 
 ## Product
 
@@ -18,6 +18,8 @@ Input your activity, city, and comfort level — get one real event, a full "wha
 mode: modryn-app
 url: https://modrynstudio.com/tools/goanyway
 basePath: /tools/goanyway
+
+modrynstudio.com has a verified **Domain property** in Google Search Console. All tools under that domain are covered automatically. Never walk through domain verification steps  just submit the tool sitemap to the existing property.
 
 ## Stack Additions
 
@@ -89,3 +91,4 @@ Launch sequence: Reddit day 1 → engage 48hrs → pSEO templates wired at build
 - GitHub: https://github.com/modryn-studio/goanyway
 - Dev.to: https://dev.to/lukehanner
 - Ship or Die: https://shipordie.club/lukehanner
+
