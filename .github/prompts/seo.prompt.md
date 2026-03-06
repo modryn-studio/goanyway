@@ -41,6 +41,42 @@ export default function robots(): MetadataRoute.Robots {
 
 **Favicon files**  if `src/app/favicon.ico`, `src/app/icon.png`, or `src/app/apple-icon.png` are missing, tell the user to run `/assets`. Do not generate favicons manually  the asset pipeline handles transparency, grayscale detection, and all output paths correctly.
 
+**`src/app/opengraph-image.tsx`**  if missing, create it. Use `site.ts` values for copy and colors, and load the logomark from `public/brand/logomark.png`. Always include: logo, headline from `site.ogTitle`, subtitle from `site.description`, and an amber CTA pill. This is the correct default structure:
+```tsx
+import { ImageResponse } from 'next/og';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { site } from '@/config/site';
+
+export const size = { width: 1200, height: 630 };
+export const contentType = 'image/png';
+
+export default async function OpenGraphImage() {
+  const logoData = await readFile(join(process.cwd(), 'public/brand/logomark.png'), 'base64');
+  const logoSrc = `data:image/png;base64,${logoData}`;
+
+  return new ImageResponse(
+    (
+      <div style={{ background: site.bg, width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', padding: '80px' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={logoSrc} alt={site.name} height={52} style={{ marginBottom: 32, objectFit: 'contain' }} />
+        <h1 style={{ color: '#FAF7F2', fontSize: 64, fontWeight: 700, lineHeight: 1.1, margin: 0, marginBottom: 24 }}>
+          {site.ogTitle}
+        </h1>
+        <p style={{ color: '#9E9693', fontSize: 28, margin: 0, marginBottom: 48 }}>
+          {site.description}
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', background: site.accent, color: site.bg, fontSize: 22, fontWeight: 700, padding: '14px 28px', borderRadius: 8 }}>
+          Get started
+        </div>
+      </div>
+    ),
+    { ...size }
+  );
+}
+```
+After generating, remind the user to customize the CTA text for their product. Do NOT generate per-page opengraph-image.tsx files  those are product-specific and written by hand.
+
 **`src/config/site.ts`** â€” if missing, create it by reading the site name, URL, description, OG copy, and brand colors from `layout.tsx` and `copilot-instructions.md`:
 ```ts
 // Single source of truth for all site-wide metadata.
@@ -112,13 +148,12 @@ Report which files were created vs already existed.
 Check the codebase for:
 - [ ] `layout.tsx` has `metadataBase`, `title`, `description`, `openGraph`, `twitter`, `manifest`
 - [ ] `layout.tsx` Twitter card has `site` handle (`twitter.site: site.social?.twitterHandle`)
-- [ ] `layout.tsx` has `icons` field pointing to `/icon.png` and `/apple-icon.png`
 - [ ] `src/app/favicon.ico` exists (multi-resolution, from logomark)
 - [ ] `src/app/icon.png` exists (1024Ã—1024 logomark)
 - [ ] `src/app/apple-icon.png` exists
 - [ ] OG title is 50â€“60 chars, description is 110â€“160 chars
 - [ ] `src/app/opengraph-image.tsx` exists (homepage OG image, dynamic via `next/og`) -- **required**; `public/og-image.png` alone does NOT inject the image into metadata
-- [ ] Key pages beyond home (e.g. /result, /confirm) also have per-page `opengraph-image.tsx` for unique social cards
+- [ ] Key pages beyond home (e.g. /result, /confirm) also have per-page `opengraph-image.tsx` for unique social cards  skip if they don't exist yet; these are product-specific and written by hand, not auto-generated
 - [ ] `src/config/site.ts` exists and is fully filled in (no TODO placeholder values)
 - [ ] `src/app/manifest.ts` exists (do NOT check for `public/manifest.json`)
 - [ ] `src/app/robots.ts` exists (do NOT check for `public/robots.txt`)
@@ -152,4 +187,6 @@ Tell me to check these once the site is deployed.
 - **OG preview:** https://opengraph.xyz -- paste **direct Vercel URL**, verify title 50â€“60 chars, description 110â€“160 chars, image 1200Ã—630
 - **JSON-LD:** https://search.google.com/test/rich-results -- paste **direct Vercel URL**, should show â€œ1 valid item detectedâ€
 - **DNS propagation:** https://www.whatsmydns.net -- check TXT record has propagated
+
+
 
