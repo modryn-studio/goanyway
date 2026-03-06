@@ -166,6 +166,8 @@ Report PASS / MISSING for each item with file paths for anything missing.
 
 ## Step 2: Manual Launch Steps (guide me through these)
 
+> **Stop here if not yet deployed.** Steps 2 and 3 require a live URL at `modrynstudio.com/tools/[slug]`. If you haven't run `/deploy` in modryn-studio-v2 yet, stop here. Complete Steps 0 and 1, commit, then run `/deploy`  then come back and pick up at Step 2.
+
 ï»¿### Google Search Console
 modrynstudio.com already has a verified **Domain property** in GSC. All tools deployed under that domain are covered automatically.
 
@@ -188,6 +190,7 @@ Tell me to check these once the site is deployed.
 - **OG preview:** https://opengraph.xyz -- paste **direct Vercel URL**, verify title 50â€“60 chars, description 110â€“160 chars, image 1200Ã—630
 - **JSON-LD:** https://search.google.com/test/rich-results -- paste **direct Vercel URL**, should show â€œ1 valid item detectedâ€
 - **DNS propagation:** https://www.whatsmydns.net -- check TXT record has propagated
+
 
 
 
