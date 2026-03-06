@@ -1,4 +1,4 @@
----
+﻿---
 name: init
 description: Reads context.md, development-principles.md, and brand.md, then fills in copilot-instructions.md and site.ts for a new project
 agent: agent
@@ -26,6 +26,7 @@ Also fill in `src/config/site.ts` — replace every `TODO:` placeholder with rea
 - `description` — 110–160 char meta description that describes what the product does and who it's for
 - `ogTitle` — 50–60 char title formatted as "Product Name | Short Value Prop"
 - `ogDescription` — 110–160 char OG description, slightly more marketing-forward than the meta description
+- `cta` -- short CTA button label (5--8 words) for the OG image pill; pull from brand's primary action or pricing copy (e.g. `'Get your plan for $9 \u2192'`, `'Start for free \u2192'`)
 - `founder` — from context.md or default to "Luke Hanner"
 - `accent` / `bg` — brand colors from brand.md (hex values)
 - `social.twitter` / `social.twitterHandle` — X/Twitter profile URL and handle (e.g. `@lukehanner`) from the Social Profiles section of context.md
@@ -143,3 +144,4 @@ Finally, wire `FeedbackWidget` into `src/app/layout.tsx`:
 - This must be present in every project — it's how Luke collects feedback from day one
 
 After editing, confirm what was filled in and flag anything that was missing from context.md or brand.md that Luke should provide.
+

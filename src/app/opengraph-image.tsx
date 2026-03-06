@@ -1,6 +1,7 @@
 ﻿import { ImageResponse } from 'next/og';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { site } from '@/config/site';
 
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -16,7 +17,7 @@ export default async function OpenGraphImage() {
     (
       <div
         style={{
-          background: '#1A1713',
+          background: site.bg,
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -29,7 +30,7 @@ export default async function OpenGraphImage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={logoSrc}
-          alt="GoAnyway"
+          alt={site.name}
           height={52}
           style={{ marginBottom: 32, objectFit: 'contain' }}
         />
@@ -44,7 +45,7 @@ export default async function OpenGraphImage() {
           }}
         >
           Stop bailing.{' '}
-          <span style={{ color: '#F5A623' }}>Show up.</span>
+          <span style={{ color: site.accent }}>Show up.</span>
         </h1>
         <p
           style={{
@@ -60,15 +61,15 @@ export default async function OpenGraphImage() {
           style={{
             display: 'flex',
             alignItems: 'center',
-            background: '#F5A623',
-            color: '#1A1713',
+            background: site.accent,
+            color: site.bg,
             fontSize: 22,
             fontWeight: 700,
             padding: '14px 28px',
             borderRadius: 8,
           }}
         >
-          Get your plan for $9 
+          {site.cta}
         </div>
       </div>
     ),

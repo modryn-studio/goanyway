@@ -67,7 +67,7 @@ export default async function OpenGraphImage() {
           {site.description}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', background: site.accent, color: site.bg, fontSize: 22, fontWeight: 700, padding: '14px 28px', borderRadius: 8 }}>
-          Get started
+          {site.cta}
         </div>
       </div>
     ),
@@ -75,7 +75,7 @@ export default async function OpenGraphImage() {
   );
 }
 ```
-After generating, remind the user to customize the CTA text for their product. Do NOT generate per-page opengraph-image.tsx files  those are product-specific and written by hand.
+Also generate per-page `opengraph-image.tsx` for each route that has a `page.tsx` but no `opengraph-image.tsx` (scan `src/app/`  exclude root, `api/`, `privacy/`, `terms/`, and any `[param]` dynamic routes). For each, briefly read the `page.tsx` to understand the page's purpose, then use the same template structure with a page-appropriate headline and subtitle. The logo, brand colors, and CTA pill are identical across all pages.
 
 **`src/config/site.ts`** â€” if missing, create it by reading the site name, URL, description, OG copy, and brand colors from `layout.tsx` and `copilot-instructions.md`:
 ```ts
@@ -87,6 +87,7 @@ export const site = {
   description: '<meta description (110â€“160 chars)>',
   ogTitle: '<OG title (50â€“60 chars)>',
   ogDescription: '<OG description (110â€“160 chars)>',
+  cta: '<CTA pill text (5--8 words, e.g. Get your plan for $9)>',
   founder: '<founder name>',
   accent: '<brand accent hex, e.g. #F97415>',
   bg: '<brand bg hex, e.g. #050505>',
@@ -153,7 +154,7 @@ Check the codebase for:
 - [ ] `src/app/apple-icon.png` exists
 - [ ] OG title is 50â€“60 chars, description is 110â€“160 chars
 - [ ] `src/app/opengraph-image.tsx` exists (homepage OG image, dynamic via `next/og`) -- **required**; `public/og-image.png` alone does NOT inject the image into metadata
-- [ ] Key pages beyond home (e.g. /result, /confirm) also have per-page `opengraph-image.tsx` for unique social cards  skip if they don't exist yet; these are product-specific and written by hand, not auto-generated
+- [ ] Key pages beyond home (e.g. /result, /confirm) also have per-page `opengraph-image.tsx` -- if missing, auto-generate them (see Step 0 above)
 - [ ] `src/config/site.ts` exists and is fully filled in (no TODO placeholder values)
 - [ ] `src/app/manifest.ts` exists (do NOT check for `public/manifest.json`)
 - [ ] `src/app/robots.ts` exists (do NOT check for `public/robots.txt`)
@@ -187,6 +188,9 @@ Tell me to check these once the site is deployed.
 - **OG preview:** https://opengraph.xyz -- paste **direct Vercel URL**, verify title 50â€“60 chars, description 110â€“160 chars, image 1200Ã—630
 - **JSON-LD:** https://search.google.com/test/rich-results -- paste **direct Vercel URL**, should show â€œ1 valid item detectedâ€
 - **DNS propagation:** https://www.whatsmydns.net -- check TXT record has propagated
+
+
+
 
 
 

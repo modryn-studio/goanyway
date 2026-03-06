@@ -10,6 +10,7 @@ export const site = {
     'Stop bailing on your first social event. Enter your activity and city — get a real event, a what-to-expect briefing, and a first-hour script.',
   // Longer form for social cards
   ogTitle: 'GoAnyway | Stop Bailing on Your First Social Event',
+  cta: 'Get your plan for $9 \u2192',
   ogDescription:
     'Pick your activity and city. Get one real event, a what-to-expect briefing, and a word-for-word script for your first hour. $9 to stop bailing.',
   founder: 'Luke Hanner',
@@ -25,3 +26,4 @@ export const site = {
     shipordie: 'https://shipordie.club/lukehanner',
   },
 } as const;
+
