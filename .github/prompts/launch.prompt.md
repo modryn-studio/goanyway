@@ -83,8 +83,8 @@ Report PASS / WARN / MISSING for each.
 ## Step 2: Launch Distribution Playbook
 
 ### Day 0 — Prep (before going live)
-1. **Build log post** — Run `/log` from this repo. Opens a PR against modryn-studio-v2. Merge before posting anywhere so links don't 404.
-2. **Update tool entry** — Run `/tool` from this repo. Opens a PR against modryn-studio-v2 to set status to `live`, add URL, screenshot, and launch date. Merge alongside the log PR.
+1. **Launch log post**  Run `/log` from this repo. This is the launch post  distinct from any build logs posted during Phase 2. Opens a PR against modryn-studio-v2. Merge before posting anywhere so links don't 404.
+2. **Flip tool to live**  Run `/tool` from this repo with `status: "live"`. This is always required at launch even if you ran `/tool` earlier with `status: "building"`. Opens a PR against modryn-studio-v2. Merge alongside the log PR.
 3. **Social copy** — After both PRs are merged, switch to modryn-studio-v2 and run `/social` with the merged log post. That repo has the voice rules — `/social` must run there, not here.
 4. **Queue content** — Draft your Reddit posts (one per target subreddit from this project's tool JSON `subreddits` field). Don't post yet.
 
