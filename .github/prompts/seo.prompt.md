@@ -132,8 +132,8 @@ Check the codebase for:
 - [ ] `src/app/icon.png` exists (1024×1024 logomark)
 - [ ] `src/app/apple-icon.png` exists
 - [ ] OG title is 50–60 chars, description is 110–160 chars
-- [ ] `public/og-image.png` exists (1200×630px) OR `src/app/opengraph-image.tsx` exists (dynamic via `next/og`)
-- [ ] Key pages beyond home have per-page `opengraph-image.tsx` for unique social cards (flag if only root-level OG exists)
+- [ ] `src/app/opengraph-image.tsx` exists (homepage OG image, dynamic via `next/og`) -- **required**; `public/og-image.png` alone does NOT inject the image into metadata
+- [ ] Key pages beyond home (e.g. /result, /confirm) also have per-page `opengraph-image.tsx` for unique social cards
 - [ ] `src/config/site.ts` exists and is fully filled in (no TODO placeholder values)
 - [ ] `src/app/manifest.ts` exists (do NOT check for `public/manifest.json`)
 - [ ] `src/app/robots.ts` exists (do NOT check for `public/robots.txt`)
