@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "goanyway",
   "version": "1.0.0",
   "description": "Stop bailing on your first social event. Get a real event, a briefing, and a first-hour script.",
@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint src/",
     "check-deps": "npx npm-check-updates"
   },
   "dependencies": {
@@ -31,6 +31,8 @@
     "@types/nodemailer": "7.0.11",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.1.6",
     "prettier": "3.8.1",
     "prettier-plugin-tailwindcss": "0.7.2",
     "typescript": "5.9.3"
