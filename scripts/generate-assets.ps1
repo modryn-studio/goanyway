@@ -1,4 +1,4 @@
-# scripts/generate-assets.ps1
+﻿# scripts/generate-assets.ps1
 # ──────────────────────────────────────────────────────────────────────────────
 # Generates all favicon, icon, OG image, and README banner assets from your
 # logomark. Run from the project root after cloning, and again after any
@@ -131,7 +131,8 @@ Write-Host "  + public/icon-dark.png"
 magick -size 1024x1024 xc:"$bgColor" `
     '(' $logomark $negateFrag -resize 800x800 ')' `
     -gravity Center -composite "public\icon.png"
-Write-Host "  + public/icon.png"
+Copy-Item "public\icon.png" "src\app\icon.png"
+Write-Host "  + public/icon.png + src/app/icon.png"
 
 # ── apple-icon.png: iOS home screen (dark bg, 180x180) ───────────────────────
 if (-not (Test-Path "src\app")) { New-Item -ItemType Directory -Path "src\app" | Out-Null }
@@ -142,7 +143,8 @@ Write-Host "  + src/app/apple-icon.png"
 
 # ── favicon.ico: legacy multi-resolution ─────────────────────────────────────
 magick $logomark -define icon:auto-resize=48,32,16 "public\favicon.ico"
-Write-Host "  + public/favicon.ico"
+Copy-Item "public\favicon.ico" "src\app\favicon.ico"
+Write-Host "  + public/favicon.ico + src/app/favicon.ico"
 
 # ── og-image.png: 1200x630 social card ───────────────────────────────────────
 magick -size 1200x630 xc:"$bgColor" `
