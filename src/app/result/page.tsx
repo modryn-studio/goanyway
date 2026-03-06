@@ -7,11 +7,11 @@ import { site } from '@/config/site';
 import ResultContentWrapper from './result-content';
 
 export const metadata: Metadata = {
-  title: 'Your Plan',
-  description: 'Your event, briefing, and first-hour script for showing up and staying.',
+  title: 'Your GoAnyway Plan — Event, Briefing, and Script',
+  description: 'Your GoAnyway plan: a real event near you and a what-to-expect briefing. The comfort stat shows how many people arrive alone. Your script unlocks for $9.',
   openGraph: {
-    title: 'Your GoAnyway Plan',
-    description: 'Your event, briefing, and first-hour script for showing up and staying.',
+    title: 'Your GoAnyway Plan — Event, Briefing, and Script',
+    description: 'Your GoAnyway plan: a real event near you and a what-to-expect briefing. The comfort stat shows how many people arrive alone. Your script unlocks for $9.',
     url: `${site.url}/result`,
     siteName: site.name,
   },

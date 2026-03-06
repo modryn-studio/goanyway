@@ -3,10 +3,10 @@ import Link from 'next/link';
 import { site } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy',
-  description: 'How GoAnyway handles your data.',
+  title: 'Privacy Policy — How GoAnyway Handles Your Data',
+  description: 'GoAnyway collects activity inputs, email if you save your plan, and phone for SMS. Stripe handles payment. Your data is not sold or shared for advertising.',
   openGraph: {
-    title: 'Privacy Policy — GoAnyway',
+    title: 'Privacy Policy — How GoAnyway Handles Your Data',
     url: `${site.url}/privacy`,
     siteName: site.name,
   },

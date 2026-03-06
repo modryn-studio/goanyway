@@ -1,5 +1,10 @@
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import PlanForm from '@/components/plan-form';
+
+export const metadata: Metadata = {
+  title: 'Stop Bailing on Your First Social Event',
+};
 
 export default function Home() {
   return (

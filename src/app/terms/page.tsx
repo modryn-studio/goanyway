@@ -3,10 +3,11 @@ import Link from 'next/link';
 import { site } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service',
-  description: 'Terms for using GoAnyway.',
+  title: 'Terms of Service — GoAnyway Event Plan Tool',
+  description: 'GoAnyway terms of service. Events are live-sourced; verify before attending. Plans are AI-generated, not a guarantee. Payment is $9 and all sales are final.',
   openGraph: {
-    title: 'Terms of Service — GoAnyway',
+    title: 'Terms of Service — GoAnyway Event Plan Tool',
+    description: 'GoAnyway terms of service. Events are live-sourced; verify before attending. Plans are AI-generated, not a guarantee. Payment is  and all sales are final.',
     url: `${site.url}/terms`,
     siteName: site.name,
   },

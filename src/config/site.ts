@@ -7,7 +7,7 @@ export const site = {
   url: 'https://modrynstudio.com/tools/goanyway',
   // Base description — used in <meta description>, manifest, JSON-LD
   description:
-    'Stop bailing on your first social event. Enter your activity and city — get a real event, a what-to-expect briefing, and a first-hour script.',
+    'Stop bailing on your first social event. Enter your activity and city — get a real event, a what-to-expect briefing, and a first-hour script. Takes 2 minutes.',
   // Longer form for social cards
   ogTitle: 'GoAnyway | Stop Bailing on Your First Social Event',
   cta: 'Get your plan for $9 \u2192',
