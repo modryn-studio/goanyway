@@ -45,6 +45,7 @@ basePath: /tools/goanyway
 - `/api/generate` → POST: takes form inputs → (1) Claude Sonnet 4.6 web search tool (`web_search_20250305`, domain-filtered to meetup/eventbrite/lu.ma) finds one real event, (2) GPT-5 mini (`gpt-5-mini`) generates structured JSON: briefing, script shell, starters list, comfort stat placeholder, (3) Claude Sonnet 4.6 rewrites the 2 emotionally loaded lines (comfort stat framing, first-hour script reassurance). Comfort level drives output structure: 1-2 = suggest lowest-friction format (drop-in class, no talking required), 3 = balanced, 4-5 = direct script, get out of the way.
 - `/api/email` → POST: Resend — adds email to list, triggers T+3 follow-up sequence ("Did you go?")
 - `/tools/goanyway/[activity]/[city]` → pSEO page. Same Perplexity data call as the main tool. Use ISR (`revalidate: 86400`) — call Perplexity at request time, not build time. This means any activity/city combination works immediately, no build step. Add `generateStaticParams` only for top 20 combinations once there's traffic data. Template built at launch, pages indexed month 2-3.
+- `/api/feedback` → POST: feedback submission + newsletter signup handler
 - `/api/sms` → POST: Telnyx — registers phone number, schedules event reminder (T-1hr) + "Did you go?" follow-up (T+3hrs post-event)
 - `/api/sms/webhook` → POST: Telnyx inbound webhook — receives "Did you go?" reply, logs yes/no to analytics, triggers optional follow-up
 

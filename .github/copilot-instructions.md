@@ -28,10 +28,10 @@ The rewrite in modryn-studio-v2 is managed by running `/deploy` in that repo —
 - GA4 for custom event tracking (via `@/lib/analytics.ts` — never call `gtag()` directly)
 - Vercel Analytics `<Analytics />` component in `layout.tsx` for pageviews only — do not use their `track()` API
 - Resend — email list capture, studio-wide broadcast, future nurture. Double opt-in is OFF — treat the capture as a plan-save request, not a newsletter signup. "Email me my plan" converts better than "Sign up for updates." Capture happens at the PayGate wall before payment — not on `/confirm`.
-- Stripe Checkout Session — $9 one-time PayGate via `/api/checkout`. Session metadata carries `activity`, `city`, `comfort_level` through the redirect to `/confirm`. The $9 is also a commitment device — a person who paid is materially more likely to attend. (not yet installed)
+- Stripe Checkout Session — $9 one-time PayGate via `/api/checkout`. Session metadata carries `activity`, `city`, `comfort_level` through the redirect to `/confirm`. The $9 is also a commitment device — a person who paid is materially more likely to attend.
 - OpenAI GPT-5 mini (`gpt-5-mini`) — generates structured JSON: event card, briefing, script shell, starters. ~$0.003/call. Uses `max_completion_tokens` (not `max_tokens`) and no `temperature` — it's a reasoning model. `response_format: json_object` supported.
 - Anthropic Claude Sonnet 4.6 (`claude-sonnet-4-6`) — two roles: (1) event search via built-in `web_search_20250305` tool with `allowed_domains` locked to `meetup.com`, `eventbrite.com`, `lu.ma` and `user_location` set to the submitted city (~$0.01/search); (2) emotional copy rewrite — comfort stat framing + script reassurance (~$0.015/call). Not a fallback — deliberate passes where tone is the differentiator. Do not use Haiku — saves $0.01, produces noticeably flatter copy.
-- Telnyx — SMS reminders + "Did you go?" follow-up (not yet installed)
+- Telnyx — SMS reminders + "Did you go?" follow-up. T-1hr event reminder → T+3hr "Did you go?" follow-up → if "no", re-engagement with new event suggestion. Opt-in framed as a feature: "Text me a reminder before my event."
 
 ## Project Structure
 

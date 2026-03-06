@@ -5,6 +5,7 @@ agent: agent
 ---
 
 Read the following files from the workspace root:
+
 1. `context.md` — project-specific facts: product name, what it does, who it's for, stack additions, and routes
 2. `development-principles.md` — product philosophy to inform tone
 3. `brand.md` — voice, visual rules, target user, emotional arc, and copy examples
@@ -19,6 +20,7 @@ Then edit `.github/copilot-instructions.md` and replace every `<!-- TODO -->` se
 - **Brand & Voice** — populate from brand.md: voice rules, visual rules (colors, fonts, motion), target user description, emotional arc, and copy examples to use as reference.
 
 Also fill in `src/config/site.ts` — replace every `TODO:` placeholder with real content from context.md and brand.md:
+
 - `name` / `shortName` — product name from context.md
 - `url` — from the **URL** section of context.md (use `https://` prefix). Extract the slug from the URL — it's the part after `/tools/`. **If the URL section is blank, do NOT guess — stop and tell Luke: "Fill in the URL field in context.md (e.g. https://modrynstudio.com/tools/your-slug)".**
 - `description` — 110–160 char meta description that describes what the product does and who it's for
@@ -39,6 +41,7 @@ Do not touch API Route Logging, Analytics, Dev Server, Code Style, or Core Rules
 ## Set basePath in next.config.ts
 
 Using the slug extracted from the URL field in context.md, update `next.config.ts`:
+
 - Replace `TODO_SLUG` in `basePath` with the actual slug
 - Example: if URL is `https://modrynstudio.com/tools/hiking-finder`, set `basePath: '/tools/hiking-finder'`
 - If the URL field was blank (and you stopped to ask Luke), leave `TODO_SLUG` in place and flag it
@@ -50,6 +53,7 @@ Using the slug extracted from the URL field in context.md, update `next.config.t
 Check the `Monetization` section of `context.md`.
 
 **If monetization is `email-only` or `one-time-payment`** (or if the section is blank — default to `email-only`):
+
 - Check if `src/components/email-signup.tsx` exists. It should already be in the boilerplate.
 - Wire it into the home page (`src/app/page.tsx`):
   - Add `import EmailSignup from '@/components/email-signup'` with the other imports
@@ -67,13 +71,18 @@ Check the `Monetization` section of `context.md`.
 **If monetization is `one-time-payment`**:
 
 ### Option A: Payment Links (recommended — fastest)
+
 No npm packages, no API routes, no env vars needed.
 
 1. User creates a Payment Link at stripe.com → Payment Links
 2. Set the Payment Link's success URL to the tool page with `?paid=true` appended (e.g. `https://modrynstudio.com/tools/[slug]?paid=true`)
 3. Pass the Payment Link URL as the `checkoutUrl` prop on `<PayGate>`:
    ```tsx
-   <PayGate checkoutUrl="https://buy.stripe.com/xxxxx" price="$9" valueProposition="Unlock full results">
+   <PayGate
+     checkoutUrl="https://buy.stripe.com/xxxxx"
+     price="$9"
+     valueProposition="Unlock full results"
+   >
      {/* paid content */}
    </PayGate>
    ```
@@ -84,6 +93,7 @@ No npm packages, no API routes, no env vars needed.
    ```
 
 ### Option B: Checkout Sessions (upgrade path)
+
 Use when you need dynamic pricing, coupons, or programmatic control.
 
 1. Install Stripe: run `npm install stripe` in the terminal
@@ -100,11 +110,13 @@ Use when you need dynamic pricing, coupons, or programmatic control.
 ---
 
 Finally, wire `FeedbackWidget` into `src/app/layout.tsx`:
+
 - Add `import FeedbackWidget from '@/components/feedback-widget'` with the other component imports
 - Add `<FeedbackWidget />` as the last child inside `<body>`, before `</body>`
 - The widget uses CSS custom properties (`--color-border`, `--color-surface`, `--color-accent`, etc.).
   Verify these exist in `globals.css` inside an `@theme` block — **not** `:root`.
   If `globals.css` doesn't exist, create it with:
+
   ```css
   @import 'tailwindcss';
 
@@ -114,7 +126,7 @@ Finally, wire `FeedbackWidget` into `src/app/layout.tsx`:
     --color-border: #222222;
     --color-text: #e5e5e5;
     --color-muted: #666666;
-    --color-accent: #F97415; /* replace with brand accent from site.ts */
+    --color-accent: #f97415; /* replace with brand accent from site.ts */
     --font-heading: var(--font-sans);
   }
 
@@ -123,9 +135,11 @@ Finally, wire `FeedbackWidget` into `src/app/layout.tsx`:
     color: var(--color-text);
   }
   ```
+
   Colors must be in `@theme`, not `:root`. Only `@theme` generates Tailwind utility classes
   (e.g. `text-accent`, `bg-surface`, `border-border`). `:root` only creates CSS variables with
   no corresponding utilities.
+
 - This must be present in every project — it's how Luke collects feedback from day one
 
 After editing, confirm what was filled in and flag anything that was missing from context.md or brand.md that Luke should provide.

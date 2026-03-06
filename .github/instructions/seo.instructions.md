@@ -1,11 +1,13 @@
 ---
-name: "SEO Rules"
-description: "Metadata exports, Open Graph, semantic HTML, heading hierarchy, and accessibility rules"
-applyTo: "**/*.ts,**/*.tsx"
+name: 'SEO Rules'
+description: 'Metadata exports, Open Graph, semantic HTML, heading hierarchy, and accessibility rules'
+applyTo: '**/*.ts,**/*.tsx'
 ---
+
 # SEO Rules
 
 ## Metadata
+
 - Every route must export a `metadata` object or `generateMetadata` function.
 - Include `title`, `description`, and `openGraph` in all metadata.
 - **`<title>` tag: 50–60 characters minimum.** Never use `site.name` alone as a title — it is too short. Use `site.ogTitle` as the default title in `layout.tsx`, and combine page name + site name for all other pages.
@@ -17,11 +19,13 @@ applyTo: "**/*.ts,**/*.tsx"
 - Set `metadataBase` in the root `layout.tsx` to the production domain.
 
 ## JSON-LD Structured Data
+
 - Add a `SoftwareApplication` JSON-LD script to the root `layout.tsx`.
 - Minimum fields: `name`, `description`, `applicationCategory`, `operatingSystem`, `url`.
 - Use a `<script type="application/ld+json">` tag inside the layout body.
 
 ## HTML
+
 - Use semantic HTML5 elements: `<main>`, `<article>`, `<section>`, `<nav>`, `<header>`, `<footer>`.
 - One `<h1>` per page. Headings must follow sequential order (h1 → h2 → h3).
 - Target keyword should appear in the first 100 words of body copy.
