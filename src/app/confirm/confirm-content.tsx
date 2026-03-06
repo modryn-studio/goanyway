@@ -1,6 +1,6 @@
 'use client';
 
-// Client components for /confirm — split so page.tsx can be a server component with metadata.
+// Client components for /confirm â€” split so page.tsx can be a server component with metadata.
 // ConfirmContent uses useSearchParams + localStorage/sessionStorage; must stay client.
 
 import { useEffect, useState, Suspense } from 'react';
@@ -9,7 +9,6 @@ import Link from 'next/link';
 import type { Plan } from '@/lib/types';
 import { analytics } from '@/lib/analytics';
 import { BASE_PATH } from '@/lib/base-path';
-import { site } from '@/config/site';
 import { site } from '@/config/site';
 
 const RECEIPT_KEY = 'payment_receipt';
@@ -23,7 +22,7 @@ interface ConfirmMeta {
 }
 
 // ---------------------------------------------------------------------------
-// SMS opt-in — schedules a reminder + "did you go?" follow-up.
+// SMS opt-in â€” schedules a reminder + "did you go?" follow-up.
 // Optional: user skips, plan still works without it.
 // ---------------------------------------------------------------------------
 function SmsOptIn({
@@ -96,7 +95,7 @@ function SmsOptIn({
           disabled={sending}
           className="bg-accent shrink-0 px-6 py-3 font-mono text-sm font-bold text-black hover:opacity-90 disabled:opacity-50"
         >
-          {sending ? 'Done...' : 'Yes →'}
+          {sending ? 'Done...' : 'Yes â†’'}
         </button>
       </form>
       <button
@@ -129,7 +128,7 @@ function ConfirmContent() {
       return;
     }
 
-    // Validate payment server-side — prevents fake session_id params bypassing the gate
+    // Validate payment server-side â€” prevents fake session_id params bypassing the gate
     fetch(`${BASE_PATH}/api/confirm?session_id=${encodeURIComponent(sessionId)}`)
       .then((r) => r.json())
       .then((data: ConfirmMeta) => {
@@ -138,7 +137,7 @@ function ConfirmContent() {
           return;
         }
 
-        // Mark as paid in localStorage — unlocks PayGate on /result if user navigates back
+        // Mark as paid in localStorage â€” unlocks PayGate on /result if user navigates back
         localStorage.setItem(RECEIPT_KEY, new Date().toISOString());
         analytics.paymentComplete();
         setMeta(data);
@@ -173,7 +172,7 @@ function ConfirmContent() {
           This link isn&apos;t valid or the payment wasn&apos;t completed.
         </p>
         <Link href="/" className="text-accent mt-5 font-mono text-sm underline underline-offset-4">
-          Start over →
+          Start over â†’
         </Link>
       </main>
     );
@@ -184,7 +183,7 @@ function ConfirmContent() {
       <main className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
         <p className="font-heading text-xl font-bold">Payment received.</p>
         <p className="text-muted mt-3 text-sm">
-          Your plan wasn&apos;t found in this session — it may have been cleared.
+          Your plan wasn&apos;t found in this session â€” it may have been cleared.
           {meta?.activity && meta?.city && (
             <>
               {' '}
@@ -193,7 +192,7 @@ function ConfirmContent() {
           )}
         </p>
         <Link href="/" className="text-accent mt-5 font-mono text-sm underline underline-offset-4">
-          Generate a new plan →
+          Generate a new plan â†’
         </Link>
       </main>
     );
@@ -226,7 +225,7 @@ function ConfirmContent() {
           </h1>
         </div>
 
-        {/* Comfort stat — surfaces first, brand rule: big number stops the scroll */}
+        {/* Comfort stat â€” surfaces first, brand rule: big number stops the scroll */}
         <section>
           <div className="text-accent font-heading text-[72px] leading-none font-bold">
             {comfort_stat.percentage}%
@@ -281,7 +280,7 @@ function ConfirmContent() {
             If this helped you
           </p>
           <a
-            href={"https://x.com/intent/post?text=" + encodeURIComponent("I've been looking into WHY people bail on meetups. It’s the fear of walking in alone. I've definitely felt this. Anyways, I just launched a tool that gives you an upcoming event, what to expect, and a word for word script that helps get thru the first hour. " + site.url)}
+            href={"https://x.com/intent/post?text=" + encodeURIComponent("I've been looking into WHY people bail on meetups. Itâ€™s the fear of walking in alone. I've definitely felt this. Anyways, I just launched a tool that gives you an upcoming event, what to expect, and a word for word script that helps get thru the first hour. " + site.url)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block rounded-md border border-white/20 px-5 py-2.5 text-sm font-medium text-white/80 hover:border-white/40 hover:text-white transition-colors"
@@ -295,7 +294,7 @@ function ConfirmContent() {
           href={`/result?id=${plan.id}`}
           className="text-muted hover:text-text block font-mono text-xs underline underline-offset-4"
         >
-          ← Back to event details
+          â† Back to event details
         </Link>
       </div>
     </main>
