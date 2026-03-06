@@ -9,6 +9,8 @@ import Link from 'next/link';
 import type { Plan } from '@/lib/types';
 import { analytics } from '@/lib/analytics';
 import { BASE_PATH } from '@/lib/base-path';
+import { site } from '@/config/site';
+import { site } from '@/config/site';
 
 const RECEIPT_KEY = 'payment_receipt';
 
@@ -271,6 +273,21 @@ function ConfirmContent() {
             eventDate={plan.event.date}
             eventTime={plan.event.time}
           />
+        </section>
+
+        {/* Share on X */}
+        <section className="border-border border-t pt-10">
+          <p className="text-muted mb-3 font-mono text-xs font-bold tracking-widest uppercase">
+            If this helped you
+          </p>
+          <a
+            href={"https://x.com/intent/post?text=" + encodeURIComponent("I've been looking into WHY people bail on meetups. It’s the fear of walking in alone. I've definitely felt this. Anyways, I just launched a tool that gives you an upcoming event, what to expect, and a word for word script that helps get thru the first hour. " + site.url)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-md border border-white/20 px-5 py-2.5 text-sm font-medium text-white/80 hover:border-white/40 hover:text-white transition-colors"
+          >
+            Share on X
+          </a>
         </section>
 
         {/* Back to event details */}

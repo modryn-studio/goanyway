@@ -3,6 +3,8 @@ import { Space_Grotesk, DM_Sans } from 'next/font/google';
 import { site } from '@/config/site';
 import { SiteSchema } from '@/components/site-schema';
 import FeedbackWidget from '@/components/feedback-widget';
+import { Footer } from '@/components/footer';
+import { Footer } from '@/components/footer';
 import './globals.css';
 
 const spaceGrotesk = Space_Grotesk({
