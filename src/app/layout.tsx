@@ -25,13 +25,9 @@ export const metadata: Metadata = {
   },
   description: site.description,
   metadataBase: new URL(site.url),
-  icons: {
-    icon: [
-      { url: '/icon-light.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark.png', media: '(prefers-color-scheme: dark)' },
-    ],
-    apple: '/apple-icon.png',
-  },
+  // favicon, icon, apple-icon all handled by file conventions:
+  //   src/app/favicon.ico, src/app/icon.png, src/app/apple-icon.png
+  // Manual `icons` entry is intentionally absent — defining it would override the file conventions.
   openGraph: {
     title: site.ogTitle,
     description: site.ogDescription,

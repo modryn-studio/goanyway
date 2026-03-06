@@ -169,4 +169,6 @@ brand.md                           ← SOURCE OF TRUTH: voice, visuals, user typ
 development-principles.md          ← SOURCE OF TRUTH: product philosophy (permanent)
 ```
 
-> Tip: `Configure Chat (gear icon) > Diagnostics` shows all loaded configs and errors.
+> **Tip:** To debug why a prompt or instruction isn't loading, open the Agent Debug panel: `Command Palette  Developer: Open Agent Debug Panel`. Shows system prompts, tool calls, and every customization loaded for the session. Replaces the old Diagnostics gear menu.
+
+> **Tip:** After any session where you corrected Copilot on a boilerplate pattern, type `/create-instruction` to turn those corrections into a persistent `.instructions.md` file. Save it to `.github/instructions/` so it travels with the boilerplate. For multi-step procedures (e.g. a fix workflow), `/create-skill` packages it as a reusable runbook instead.
