@@ -145,6 +145,18 @@ export function SiteSchema() {
 
 Report which files were created vs already existed.
 
+**`twitter:site` in `layout.tsx`**  if `twitter.site` is missing from the Twitter card metadata, add it using `site.social?.twitterHandle`:
+```ts
+twitter: {
+  card: 'summary_large_image',
+  site: site.social?.twitterHandle,
+  title: site.ogTitle,
+  description: site.ogDescription,
+},
+```
+
+**Sitemap `lastModified` dates**  if `sitemap.ts` uses `lastModified: new Date()` on any route, replace each with a static ISO date. `new Date()` reports a change on every crawl, wastes crawl budget, and degrades freshness signals. Use a date matching when that page last meaningfully changed.
+
 ## Step 1: Code Audit
 Check the codebase for:
 - [ ] `layout.tsx` has `metadataBase`, `title`, `description`, `openGraph`, `twitter`, `manifest`

@@ -1,6 +1,6 @@
 ﻿---
 name: launch
-description: "Distribution checklist: sharing hooks, dynamic OG images, social footer, community posting guide."
+description: "Distribution checklist: sharing hooks, social footer, share-on-X hooks, and community posting guide."
 agent: agent
 ---
 # Launch Distribution
@@ -13,6 +13,8 @@ Run this after `/seo` (which handles technical SEO). This covers getting eyes on
 
 Check and implement the following if missing:
 
+> **Runs after `/seo`**  OG images (homepage + per-page), `twitter:site` handle, sitemap dates, `robots.ts`, `manifest.ts`, and `site-schema.tsx` are all handled by `/seo`. Do not re-do them here.
+
 **`site.ts` social block** — if `site.social` is missing or contains TODO values, populate it from the Social Profiles section of `context.md`:
 ```ts
 social: {
@@ -24,17 +26,6 @@ social: {
 ```
 If `context.md` has no social profiles filled in, ask the user for their X/Twitter handle before proceeding.
 
-**`twitter:site` in `layout.tsx`** — if `twitter.site` is missing from the Twitter card metadata, add it:
-```ts
-twitter: {
-  card: 'summary_large_image',
-  site: site.social.twitterHandle,
-  title: site.ogTitle,
-  description: site.ogDescription,
-  images: ['/og-image.png'],
-},
-```
-
 **Footer social links** — check whether the site footer includes links to the social profiles in `site.social`. If not, add `<a>` tags for X/Twitter and GitHub at minimum. Use `site.social.*` as the source — never hardcode URLs. Example:
 ```tsx
 <a href={site.social.twitter} target="_blank" rel="noopener noreferrer">X</a>
@@ -44,41 +35,6 @@ twitter: {
 **Modryn Studio footer credit** — check whether the footer copyright includes a link to `modrynstudio.com`. If not, update it:
 ```tsx
 © {new Date().getFullYear()} {site.name} · <a href="https://modrynstudio.com" target="_blank" rel="noopener noreferrer">Modryn Studio</a>
-```
-
-**Dynamic OG images** — check whether `src/app/opengraph-image.tsx` exists. If not, create it using `next/og` `ImageResponse`. Also check key non-home pages (e.g. `/how-it-works`, `/about`, any tool/product page) — if they only inherit the root OG image, generate per-page `opengraph-image.tsx` files with headlines that match each page's purpose:
-```tsx
-import { ImageResponse } from 'next/og';
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { site } from '@/config/site';
-
-export const size = { width: 1200, height: 630 };
-export const contentType = 'image/png';
-
-export default async function OpenGraphImage() {
-  const logoData = await readFile(join(process.cwd(), 'public/brand/logomark.png'), 'base64');
-  const logoSrc = `data:image/png;base64,${logoData}`;
-
-  return new ImageResponse(
-    (
-      <div style={{ background: site.bg, width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', padding: '80px' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={logoSrc} alt={site.name} height={52} style={{ marginBottom: 32, objectFit: 'contain' }} />
-        <h1 style={{ color: '#FAF7F2', fontSize: 64, fontWeight: 700, lineHeight: 1.1, margin: 0, marginBottom: 24 }}>
-          {/* page-specific headline */}
-        </h1>
-        <p style={{ color: '#9E9693', fontSize: 28, margin: 0, marginBottom: 48 }}>
-          {/* page-specific subtitle */}
-        </p>
-        <div style={{ display: 'flex', alignItems: 'center', background: site.accent, color: site.bg, fontSize: 22, fontWeight: 700, padding: '14px 28px', borderRadius: 8 }}>
-          {site.cta}
-        </div>
-      </div>
-    ),
-    { ...size }
-  );
-}
 ```
 
 **Sharing hook at outcome** — check the success / done state of the main user flow (the screen shown after the core action completes). If there is no share button or link, add a pre-filled X/Twitter share link:
@@ -111,28 +67,15 @@ const faqSchema = {
 <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 ```
 
-**Sitemap `lastModified` dates** — open `sitemap.ts` and check whether any route uses `lastModified: new Date()`. If found, replace each occurrence with a static date matching when that page's content last meaningfully changed. Using `new Date()` tells Google every page changed on every crawl — it wastes crawl budget and degrades freshness signals:
-```ts
-// BAD — reports a new change on every crawl
-{ url: `${site.url}/about`, lastModified: new Date() }
-
-// GOOD — static date matching when the page content last changed
-{ url: `${site.url}/about`, lastModified: new Date('2025-01-01') }
-```
-For routes that resolve from MDX/JSON files, derive `lastModified` from each file's frontmatter `date` field. For the home page, use the date of the most recent meaningful content update. Ask the user to confirm dates before writing.
 
 Report what was created vs already existed.
 
 ## Step 1: Audit
 - [ ] `site.ts` has `social` block with real values (no TODOs)
-- [ ] `layout.tsx` Twitter card has `site` handle
 - [ ] Footer has X/Twitter + GitHub links from `site.social`
 - [ ] Footer has Modryn Studio credit linking to modrynstudio.com
-- [ ] `src/app/opengraph-image.tsx` exists with correct title/desc
-- [ ] Key pages beyond home have per-page `opengraph-image.tsx` -- if missing, auto-generate them (see Step 0 above)
 - [ ] Main flow success/done state has a share link
 - [ ] Educational/FAQ pages have FAQPage JSON-LD
-- [ ] `sitemap.ts` uses static `lastModified` dates (not `new Date()`)
 - [ ] Product screenshots referenced in `site.ts` or content JSON are rendered in the landing page (not just stored in `public/`)
 
 Report PASS / WARN / MISSING for each.
