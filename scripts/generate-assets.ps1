@@ -142,7 +142,7 @@ magick -size 180x180 xc:"$bgColor" `
 Write-Host "  + src/app/apple-icon.png"
 
 # ── favicon.ico: legacy multi-resolution ─────────────────────────────────────
-magick $logomark -define icon:auto-resize=48,32,16 "public\favicon.ico"
+magick $logomark -trim +repage -define icon:auto-resize=48,32,16 "public\favicon.ico"
 Copy-Item "public\favicon.ico" "src\app\favicon.ico"
 Write-Host "  + public/favicon.ico + src/app/favicon.ico"
 
