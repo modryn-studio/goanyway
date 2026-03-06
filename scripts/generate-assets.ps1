@@ -165,7 +165,7 @@ if (Test-Path $banner) {
     Write-Host "  + public/brand/banner.png (auto-generated)"
     if (-not (Test-Path "public\brand")) { New-Item -ItemType Directory -Path "public\brand" | Out-Null }
     magick -size 1280x320 xc:"$bgColor" `
-        '(' $logomark $negateFrag -resize 160x160 ')' `
+        '(' $markSrc -trim +repage $negateFrag -resize 160x160 ')' `
         -gravity West -geometry +100+0 -composite `
         -gravity West -font "Arial-Bold" -pointsize 72 -fill "#e5e5e5" -annotate +300+0 $siteName `
         $banner
