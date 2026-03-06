@@ -44,6 +44,7 @@ Set-Location (Split-Path -Parent $PSScriptRoot)
 
 $logomark     = "public\brand\logomark.png"
 $logomarkDark = "public\brand\logomark-dark.png"
+$logomarkBare = "public\brand\logomark-bare.png"  # bare mark (no bg)  used for favicons when present
 $banner       = "public\brand\banner.png"
 
 # ── Guards ────────────────────────────────────────────────────────────────────
@@ -113,7 +114,8 @@ $negateFrag  = if ($isGrayscale) { @('-channel', 'RGB', '-negate') } else { @() 
 #               icon-light.png = icon-dark.png = logomark.png (no change needed)
 if (Test-Path $logomarkDark) {
     Write-Host "  favicon mode: DUAL (logomark.png + logomark-dark.png)" -ForegroundColor DarkGray
-    Copy-Item $logomark     "public\icon-light.png"
+    $lightSrc = if (Test-Path $logomarkBare) { $logomarkBare } else { $logomark }
+    Copy-Item $lightSrc     "public\icon-light.png"
     Copy-Item $logomarkDark "public\icon-dark.png"
 } elseif ($isGrayscale) {
     Write-Host "  favicon mode: AUTO (grayscale detected, inverting for dark mode)" -ForegroundColor DarkGray
@@ -129,7 +131,7 @@ Write-Host "  + public/icon-dark.png"
 
 # ── icon.png: manifest + JSON-LD (dark bg, mark composited) ──────────────────
 magick -size 1024x1024 xc:"$bgColor" `
-    '(' $logomark $negateFrag -resize 800x800 ')' `
+    '(' $markSrc -trim +repage $negateFrag -resize 800x800 ')' `
     -gravity Center -composite "public\icon.png"
 Copy-Item "public\icon.png" "src\app\icon.png"
 Write-Host "  + public/icon.png + src/app/icon.png"
@@ -137,12 +139,12 @@ Write-Host "  + public/icon.png + src/app/icon.png"
 # ── apple-icon.png: iOS home screen (dark bg, 180x180) ───────────────────────
 if (-not (Test-Path "src\app")) { New-Item -ItemType Directory -Path "src\app" | Out-Null }
 magick -size 180x180 xc:"$bgColor" `
-    '(' $logomark $negateFrag -resize 140x140 ')' `
+    '(' $markSrc -trim +repage $negateFrag -resize 140x140 ')' `
     -gravity Center -composite "src\app\apple-icon.png"
 Write-Host "  + src/app/apple-icon.png"
 
 # ── favicon.ico: legacy multi-resolution ─────────────────────────────────────
-magick $logomark -trim +repage -define icon:auto-resize=48,32,16 "public\favicon.ico"
+magick $markSrc -trim +repage -define icon:auto-resize=48,32,16 "public\favicon.ico"
 Copy-Item "public\favicon.ico" "src\app\favicon.ico"
 Write-Host "  + public/favicon.ico + src/app/favicon.ico"
 
