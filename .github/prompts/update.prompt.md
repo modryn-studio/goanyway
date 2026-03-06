@@ -1,3 +1,4 @@
+```prompt
 ---
 name: update
 description: Re-reads context.md, brand.md, and development-principles.md and cascades any changes into copilot-instructions.md, site.ts, and next.config.ts

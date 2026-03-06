@@ -1,4 +1,4 @@
-﻿---
+---
 name: deps
 description: "Validate all dependencies - versions AND API patterns - against live documentation. Surfaces breaking changes, not just version gaps."
 agent: agent
