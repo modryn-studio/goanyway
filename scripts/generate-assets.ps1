@@ -130,7 +130,7 @@ Write-Host "  + public/icon-dark.png"
 # Dark bg is skipped here; apple-icon carries it for iOS where a bg is needed.
 $markSrc = if (Test-Path $logomarkBare) { $logomarkBare } else { $logomark }
 if (-not (Test-Path "src\app")) { New-Item -ItemType Directory -Path "src\app" | Out-Null }
-magick $markSrc -trim +repage -resize 1024x1024 -gravity Center -extent 1024x1024 `
+magick $markSrc -background none -trim +repage -resize 1024x1024 -gravity Center -extent 1024x1024 `
     "src\app\icon.png"
 Write-Host "  + src/app/icon.png"
 
